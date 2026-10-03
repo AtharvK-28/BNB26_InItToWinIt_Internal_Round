@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * CreatorAI design tokens — modeled on Airbnb's DLS:
+ * white canvas, one accent (Rausch) used sparingly, soft radii,
+ * depth from photography + whitespace rather than heavy shadows.
+ */
+@theme {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-rausch: #ff385c;
+  --color-rausch-dark: #e00b41;
+  --color-rausch-soft: #fff0f3;
+  --color-plus: #92174d;
+  --color-ink: #222222;
+  --color-ink-2: #6a6a6a;
+  --color-ink-3: #929292;
+  --color-line: #dddddd;
+  --color-line-soft: #ebebeb;
+  --color-surface: #f7f7f7;
+  --color-surface-2: #f2f2f2;
+  --color-babu: #008a05;
+  --color-babu-soft: #e8f5e9;
+  --color-arches: #c13515;
+  --color-arches-soft: #fff4f0;
+  --color-amber: #b45309;
+  --color-amber-soft: #fff8eb;
+  --color-sky: #1a73e8;
+  --color-sky-soft: #eef4fe;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --shadow-card: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --shadow-search: 0 3px 12px 0 rgba(0, 0, 0, 0.1);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-float: 0 8px 28px rgba(0, 0, 0, 0.28);
+  --shadow-panel: 0 2px 16px rgba(0, 0, 0, 0.12);
+
+  --animate-fade-in: fade-in 0.2s ease-out both;
+  --animate-slide-up: slide-up 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-slide-in-right: slide-in-right 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-pop: pop 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.96); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes shimmer {
+    from { background-position: -400px 0; }
+    to { background-position: 400px 0; }
   }
 }
 
+:root {
+  --header-h: 80px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.43;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #ffd1da;
+}
+
+/* Airbnb's signature reserve-button gradient, with a mouse-follow highlight */
+.btn-rausch {
+  background-image: radial-gradient(
+      circle at center center,
+      #ff385c 0%,
+      #e61e4d 27.5%,
+      #e31c5f 40%,
+      #d70466 57.5%,
+      #bd1e59 75%,
+      #bd1e59 100%
+    );
+  background-size: 200% 200%;
+  background-position: calc((100 - var(--mx-n, 50)) * 1%) calc((100 - var(--my-n, 50)) * 1%);
+  color: #fff;
+}
+.btn-rausch:disabled {
+  background: #dddddd;
+  color: #ffffff;
+}
+
+/* AI accent — Rausch fading into Airbnb "Plus" plum */
+.ai-text {
+  background: linear-gradient(90deg, #e61e4d 0%, #d70466 45%, #92174d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ai-bg {
+  background: linear-gradient(120deg, #ff385c 0%, #d70466 50%, #92174d 100%);
+}
+.ai-border {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(120deg, #ff385c, #d70466 50%, #92174d) border-box;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f2f2f2 0px, #ebebeb 40px, #f2f2f2 80px);
+  background-size: 800px 100%;
+  animation: var(--animate-shimmer);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #dddddd transparent;
+}
+
+/* Typing caret for streamed AI text */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: currentColor;
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+
+/* Focus ring matching Airbnb's thick dark outline */
+:focus-visible {
+  outline: 2px solid #222222;
+  outline-offset: 2px;
+}
+
+/* Text fields sit inside containers that draw their own focus state (border/ring). */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+input[type="range"] {
+  accent-color: #222222;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
