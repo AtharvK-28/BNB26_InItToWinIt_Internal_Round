@@ -1,77 +1,124 @@
 # CreatorAi
 
-A free-first creator workspace with AI scripts/hooks, cached audio/visual understanding, source-grounded clip proposals and real platform video exports. Supabase provides Auth, Postgres and private Storage. The previous application is preserved under `archive/`.
+### AI-powered content operations for creators
 
-Current runtime: one tool-using LangGraph clip agent plus separate drafting/indexing jobs. Next direction: a coordinator with Story, Footage Research and Clip Director agents, typed handoffs and shared budgets. An inbuilt video/image editor is out of scope; editable output is retained in portable source-linked files. See [multi-agent workflow](docs/agents_and_workflows.md) and [current requirements](docs/product_requirements.md).
+CreatorAi brings a creator's ideas, scripts and footage into one workspace and helps turn them into useful, platform-ready content. It connects what the creator wants to say with what actually exists in their footage, proposes short clips with supporting evidence, and keeps the creator in control through review and revision.
+
+The product is being developed toward a coordinated multi-agent workflow. The current prototype already supports real footage analysis, a tool-using clip agent, creator review and video exports; the specialist-agent handoffs are the next implementation milestone.
+
+## The problem
+
+Content production is scattered across writing tools, asset folders, editing applications and publishing platforms. Creators repeatedly search through recordings, rewrite hooks and prepare different versions of the same content.
+
+CreatorAi connects those steps around a project: keep the source material together, understand it once, find the moments that support the story, and prepare outputs for the intended platforms.
+
+## The creator workflow
+
+| Stage | What the creator does | What CreatorAi provides |
+| --- | --- | --- |
+| **Material** | Upload footage and organize it in a project | Private originals, thumbnails, metadata and reusable audio/visual analysis |
+| **Story** | Add an idea, brief or existing script | Suggested hooks, a working script, titles and supporting copy for explicit acceptance |
+| **Cuts** | Ask for useful moments and review the proposals | Source-linked candidates, transcript quotes, visual evidence and a revision/approval step |
+| **Deliver** | Choose an output format and approve the result | Rendered MP4 and a portable package containing structured edit instructions and supporting files |
+
+Creators can begin with a script or with existing footage. The goal is one connected production flow, with a small set of useful candidates and clear next actions.
+
+## What makes the workflow useful
+
+- **Source-grounded proposals:** clips refer to actual footage ranges, speech and inspected visual windows. Missing evidence is surfaced rather than invented.
+- **Reusable understanding:** a saved footage index avoids analyzing the same source for every request.
+- **Creator control:** AI results are staged for review; accepting a suggestion is explicit, and newer creator work is not silently overwritten.
+- **Recoverable work:** jobs and agent checkpoints persist so an interrupted workflow can resume.
+- **Platform adaptation:** exports support YouTube Shorts, Instagram Reels and a landscape YouTube preset.
+- **Editable outputs:** originals and structured production instructions remain available alongside the finished video.
+
+## Multi-agent direction
+
+The target system separates creative responsibilities into specialist agents coordinated through LangGraph:
+
+| Agent | Responsibility |
+| --- | --- |
+| **Story Agent** | Draft and revise hooks, scripts and supporting copy using the brief and available source facts |
+| **Footage Research Agent** | Search timestamped speech, inspect relevant visual windows and report evidence or missing matches |
+| **Clip Director** | Choose coherent moments, connect them to the approved story and request more research when necessary |
+
+A coordinating workflow manages typed handoffs, saved state, shared usage budgets and creator review. Extraction, validation, platform presets and rendering remain deterministic jobs.
+
+**Implementation status:** the runtime currently has one adaptive clip agent plus separate AI drafting and indexing jobs. It does not yet implement the three specialist agents above. Their responsibilities, contracts and completion checks are defined in [the multi-agent plan](docs/agents_and_workflows.md).
+
+## Editable content and scope
+
+CreatorAi preserves editable production data instead of retaining only a flattened MP4. The current export package contains:
+
+- `video.mp4` — the rendered output.
+- `edit-plan.json` — source identity, cut instructions and output preset.
+- `captions.srt` — timed subtitle text.
+- `caption.txt` — supporting post copy.
+- `cover.svg` — a cover with separate text layers.
+
+These files support external editing and inspection. The package is not currently a native Premiere, Resolve or CapCut project.
+
+An embedded video/image editor is outside the current product scope. The focus is agent-assisted production, candidate review, revision requests and export. Direct publishing, scheduling and Creator Intelligence are later milestones.
+
+## Technology
+
+| Layer | Stack |
+| --- | --- |
+| Web application | Next.js 16, React 19, TypeScript, custom CSS design system |
+| Application API | Python 3.12, FastAPI, Pydantic |
+| Data and identity | Supabase Postgres, Auth and private Storage; SQLAlchemy and Alembic |
+| AI reasoning | Gemini Flash through a server-only Interactions API adapter |
+| Agent orchestration | LangGraph with persistent checkpoints |
+| Background execution | Database-backed queue with worker leases and recovery |
+| Media processing | FFmpeg and FFprobe |
+| Deployment configuration | Vercel frontend and Render Docker API |
+
+Most development checks use mocked AI and real media processing. The prototype reuses analysis, bounds tool/inspection work and stops on provider failures without automatic model retries or paid fallbacks. Approval and rendering require no AI calls.
+
+## Current prototype status
+
+The end-to-end local demo has been verified against Supabase: footage import, audio/visual analysis, script generation, agent-selected clips, creator approval and real MP4/ZIP exports. Authentication, private media access and cross-account isolation have been checked. Local verification includes 29 passing backend tests, frontend lint/type checks and a production build.
+
+Current source limits are **40 MB and 180 seconds**. Transcript timestamps are estimates and need review. Public Vercel/Render deployment and the Docker image still require host-side verification. See [implementation progress](docs/implementation_progress.md) for the precise checks and limitations.
 
 ## Run locally
 
-Requirements: Node.js 24, pnpm 11.19.0, Python 3.12, uv, and FFmpeg/ffprobe for clip import. JavaScript versions are locked in `pnpm-lock.yaml`; Python versions are locked in `services/api/uv.lock` and exported to `requirements.txt`.
+Install **Node.js 24**, **pnpm 11.19.0**, **Python 3.12**, **uv**, and **FFmpeg/ffprobe**.
 
-First install dependencies:
+From the repository root, on first setup:
 
 ```powershell
 pnpm install --frozen-lockfile
-cd services/api
-uv sync --frozen --python 3.12 --cache-dir ../../.local/uv-cache
+Copy-Item apps/web/.env.example apps/web/.env.local
+Copy-Item services/api/.env.example services/api/.env
 ```
 
-Copy `services/api/.env.example` to `.env` and `apps/web/.env.example` to `.env.local` **only on first setup**. Follow [account setup](docs/human_setup.md) for the cloud profile. Frontend env values are public; database credentials and the service role key belong only in the API env. Env files are ignored.
+Configure the copied env files before starting. The templates support an independent local profile; Supabase cloud setup is documented in [account setup](docs/human_setup.md). For AI features, put `GEMINI_API_KEY` in the API env and enable its demo worker. Keep database credentials and service keys server-only.
 
-For another PC or a shared Supabase project, follow [collaborator setup](docs/collaborator_setup.md), including portable FFmpeg paths and the single shared-worker setting.
-
-Start the API from `services/api`:
+Start the API:
 
 ```powershell
+cd services/api
+uv sync --frozen --python 3.12 --cache-dir ../../.local/uv-cache
 uv run --no-sync --cache-dir ../../.local/uv-cache uvicorn creatorai.main:create_app --factory --host 127.0.0.1 --port 8000 --no-access-log
 ```
 
-In a separate terminal at the repository root:
+In a second terminal at the repository root:
 
 ```powershell
 pnpm dev
 ```
 
-Open [the workspace](http://127.0.0.1:3000/). The browser calls the API directly using its configured URL. Both services must run. API startup applies versioned migrations before accepting requests.
+Open **http://127.0.0.1:3000/**. Both services must run. Do not expose anonymous local mode publicly.
 
-The default example files also support an offline, single-user loopback profile: keep both modes `local`, leave `DATABASE_URL` empty, and keep `STORAGE_BACKEND=local`. It uses `.local/creatorai.db` and `.local/media`. Existing SQLite drafts are backed up before the first migration; switching to cloud does not automatically transfer local drafts. Never expose anonymous local mode publicly.
+## Project documentation
 
-## Current workflow
+- [Collaborator setup](docs/collaborator_setup.md): another-PC setup, private env handoff and shared-worker configuration.
+- [Product requirements](docs/product_requirements.md): current scope and acceptance criteria.
+- [Multi-agent workflow](docs/agents_and_workflows.md): agent roles, handoffs and next implementation steps.
+- [Technical stack](docs/technical_stack.md): installed technologies and service boundaries.
+- [Core demo](docs/core_demo.md): how the existing runtime works.
+- [Deployment setup](docs/human_setup.md): Supabase, Render and Vercel configuration.
+- [Design system](DESIGN.md) and [design tools](docs/design_tools.md): interface direction and portable licensed resources.
 
-Create a project, write an editable brief, and choose YouTube/Instagram destinations. Save explicitly or with Ctrl/Cmd+S. Unsaved working text is recovered from owner-scoped session storage within the same browser tab; stale revisions are rejected and drafts can be downloaded before reloading.
-
-Open **Material** to add an MP4, WebM or H.264 MOV, up to 40 MB, 180 seconds and 4K. Imports retain the original, extract metadata and generate a real thumbnail. Duplicate bytes within a project reuse the existing asset. Upload progress, stop/reconcile, storage errors and expired preview links have recovery controls. Browser playback still depends on the file's codecs/container; H.264 MP4 is the most reliable supported input.
-
-Open **Story** for AI hooks and a script, **Cuts** for cached footage analysis and agent-selected moments, and **Deliver** for actual MP4/ZIP exports. Review approval is explicit; the package retains structured cut instructions, captions and cover layers for external editing. Existing manual cut/cover controls are experimental extras outside the current scope and are not the next development priority. See [core demo](docs/core_demo.md) for the implemented runtime and quotas. Publishing to platform accounts and Creator Intelligence remain deferred.
-
-Cloud projects, runs, analyses, cuts and exports are restricted by authenticated owner. Storage stays private; preview/download links expire after five minutes. Add a server-only `GEMINI_API_KEY` and set `ENABLE_DEMO_WORKER=true` in the API env to enable queued AI/render work. Manual cuts and exports do not consume AI quota.
-
-## Deployment
-
-`render.yaml` prepares a Free Render Docker API, including FFmpeg. Import `apps/web` into Vercel Hobby for this personal/noncommercial demo. Set the dashboard env values described in [account setup](docs/human_setup.md). The hosted profile rejects SQLite/local storage, and Vercel builds reject missing cloud settings. Containers and public deployment still require checks on the actual hosts; local Supabase verification alone is not a public deployment.
-
-## Checks
-
-```powershell
-pnpm lint
-pnpm build
-pnpm typecheck
-cd services/api
-uv run --no-sync --cache-dir ../../.local/uv-cache ruff check creatorai migrations tests
-uv run --no-sync --cache-dir ../../.local/uv-cache pytest -q
-```
-
-CI includes FFmpeg media tests and a disposable Postgres service. See [implementation progress](docs/implementation_progress.md) for the checks actually run.
-
-## Design tools on another PC
-
-The three selected skill snapshots are checked in with their licenses. No design service or account is needed:
-
-```powershell
-python docs/tools/setup_design_skills.py
-python docs/tools/setup_design_skills.py --install
-```
-
-This verifies the snapshot, then optionally installs project-local skill copies without overwriting existing ones. Restart the coding agent or refer directly to the SKILL.md paths in [design tools](docs/design_tools.md). Generated copies are ignored. Keep [third-party notices](THIRD_PARTY_NOTICES.md) with redistributed resources.
-
-Start with [the docs index](docs/README.md), [free prototype plan](docs/prototype_budget.md), and root [DESIGN.md](DESIGN.md). The archive stays outside active builds and lint.
+The active application lives in `apps/web` and `services/api`. The original application is preserved in `archive/`; it is excluded from the active build. Secrets, local footage, generated exports and installed dependencies are excluded from Git. Third-party design resources retain their [licenses and provenance](THIRD_PARTY_NOTICES.md).
