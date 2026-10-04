@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     )
     max_upload_mb: int = Field(default=40, ge=1, le=40)
     max_clip_seconds: int = Field(default=180, ge=1, le=180)
+    max_audio_seconds: int = Field(default=600, ge=1, le=1800)
     ffmpeg_binary: str = "ffmpeg"
     ffprobe_binary: str = "ffprobe"
     gemini_api_key: SecretStr = SecretStr("")

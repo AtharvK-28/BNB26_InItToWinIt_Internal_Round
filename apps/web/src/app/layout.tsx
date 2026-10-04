@@ -1,33 +1,34 @@
-import type { Metadata } from "next";
-import "@fontsource-variable/dm-sans";
-import "@fontsource-variable/manrope";
-import "./tokens.css";
+import type { Metadata, Viewport } from "next";
+import { Figtree } from "next/font/google";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
-import "./refinements.css";
-import "./demo.css";
-import { Shell } from "@/components/shell";
-import { SessionGate, SessionProvider } from "@/components/session";
+
+const figtree = Figtree({
+  variable: "--font-figtree",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
-  title: "CreatorAi — Your creative workspace",
+  title: {
+    default: "CreatorAI — the operating system for creators",
+    template: "%s · CreatorAI",
+  },
   description:
-    "A space to turn your ideas and footage into stories you can shape.",
-  robots: { index: false, follow: false },
+    "Find fairly-paid brand deals, plan content without burning out, and let AI handle pitches, contracts, invoices and your inbox — all in one place.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
-      <body>
-        <SessionProvider>
-          <Shell>
-            <SessionGate>{children}</SessionGate>
-          </Shell>
-        </SessionProvider>
+    <html lang="en" className={`${figtree.variable} h-full`}>
+      <body className="min-h-full">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

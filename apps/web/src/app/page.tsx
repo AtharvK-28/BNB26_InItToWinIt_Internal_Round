@@ -1,5 +1,6 @@
-import { Projects } from "@/components/projects";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-  return <Projects />;
+/** CreatorAI opens on the Studio; the brand-deal marketplace lives at /deals. */
+export default function Home() {
+  redirect("/studio");
 }

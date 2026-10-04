@@ -10,10 +10,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## CreatorAi project context
 
-Read `DESIGN.md` and `docs/implementation_progress.md` before continuing implementation. This is an iterative, free-first prototype. Keep each increment functional and verified; avoid invented AI outputs or performance metrics.
+Read `README.md`, `DESIGN.md` and `docs/implementation_progress.md` before continuing implementation. This is an iterative, free-first prototype. Keep each increment functional and verified; avoid invented AI outputs or performance metrics.
 
-Current scope: develop coordinator/Story/Footage Research/Clip Director workflows with typed handoffs and shared budgets. Read `docs/product_requirements.md` and `docs/agents_and_workflows.md` before agent or workflow changes. Current runtime has one adaptive clip agent, not an implemented multi-agent system. Inbuilt video/image editors are out of scope; retain portable structured output files and prioritize candidate review, agent revision requests and export. Existing experimental editing controls are not permission to expand editor scope.
+The product is one web app (`apps/web`) with the video pipeline API (`services/api`) behind it. The studio shell, navigation and Airbnb-style design system in `apps/web` are the agreed UI: build new screens inside them (`components/studio/Shell`, `components/ui`, tokens in `globals.css`) rather than introducing a separate stylesheet, theme or app shell. Pipeline screens live under `/studio/projects` and `components/video`; the API client is `lib/video`.
 
-For UI work, read the portable skill files under `docs/design-resources/open-design/skills/frontend-design/`, `docs/design-resources/hallmark/skills/hallmark/`, and `docs/design-resources/ui-ux-pro-max/.claude/skills/ui-ux-pro-max/`. Product tokens and the working application brief in DESIGN.md take precedence over marketing-page defaults. Read only relevant references. The optional offline setup command is `python docs/tools/setup_design_skills.py --install`.
+Current scope: develop coordinator/Story/Footage Research/Clip Director workflows with typed handoffs and shared budgets. Read `docs/product_requirements.md` and `docs/agents_and_workflows.md` before agent or workflow changes. Current runtime has one adaptive clip agent, not an implemented multi-agent system. The cut editor covers only what the renderer applies (trim, title, hook, framing, captions, cover); a timeline editor is out of scope. Keep editor previews and `services/api/creatorai/render.py` in sync, and retain portable structured output files.
 
-Never display `.env` values, signed URLs, bearer tokens, or passwords. Archive content stays outside the active build. Cloud deployments require Supabase Auth/Postgres/private Storage; local anonymous mode is only for loopback development.
+Studio text AI (ideas, scripts, repurposing, copilot) runs in `apps/web/src/app/api/ai` with Claude when `ANTHROPIC_API_KEY` is set and a local engine otherwise. Footage understanding and the clip agent run in the API with Gemini. Don't spend a provider's quota in tests; use the mocks.
+
+Never display `.env` values, signed URLs, bearer tokens, or passwords. Cloud deployments require Supabase Auth/Postgres/private Storage; local anonymous mode is only for loopback development.

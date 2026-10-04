@@ -245,19 +245,46 @@ class JobEngine:
                     saver,
                 )
 
+    def linked_asset(self, job, asset_id, folder, name):
+        """Download a project asset the cut refers to (music bed, cover image)."""
+        if not asset_id:
+            return None
+        with self.sessions() as session:
+            linked = session.scalar(
+                select(Asset).where(
+                    Asset.id == asset_id,
+                    Asset.owner_id == job.owner_id,
+                    Asset.project_id == job.project_id,
+                )
+            )
+        if not linked:
+            raise ProviderError(f"The {name} used by this cut is no longer in the project.")
+        target = folder / name.replace(" ", "-")
+        target.mkdir()
+        return source_file(linked, self.storage, self.settings, target)
+
     def export(self, job, source, folder, event, asset):
         with self.sessions() as session:
             existing = session.scalar(select(Export).where(Export.run_id == job.id))
             if existing:
                 return {"export_id": existing.id}
+        document = job.input["document"]
+        music = self.linked_asset(
+            job, (document.get("music") or {}).get("asset_id"), folder, "music"
+        )
+        cover = self.linked_asset(
+            job, document.get("cover", {}).get("image_asset_id"), folder, "cover image"
+        )
         event("Rendering your saved cut and captions", "render_video")
         video, package = render(
             source,
             folder,
             self.settings,
-            job.input["document"],
+            document,
             job.input["preset"],
             {"asset_id": asset.id, "filename": asset.filename, "sha256": asset.sha256},
+            music,
+            cover,
         )
         identifier = job.id
         prefix = f"{job.owner_id}/{job.project_id}/exports/{identifier}"

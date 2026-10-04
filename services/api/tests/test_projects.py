@@ -46,7 +46,7 @@ def test_project_survives_restart(database_url):
         {"title": "x" * 121},
         {"platforms": []},
         {"platforms": ["youtube", "youtube"]},
-        {"platforms": ["tiktok"]},
+        {"platforms": ["myspace"]},
         {"brief": "x" * 20001},
         {"invented_field": True},
     ],

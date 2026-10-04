@@ -1,9 +1,11 @@
 from datetime import UTC, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 
-Platform = Literal["youtube", "instagram"]
+from creatorai.media import asset_kind
+
+Platform = Literal["youtube", "instagram", "tiktok", "linkedin", "x"]
 
 
 class ProjectFields(BaseModel):
@@ -11,7 +13,7 @@ class ProjectFields(BaseModel):
 
     title: str = Field(min_length=1, max_length=120)
     brief: str = Field(default="", max_length=20000)
-    platforms: list[Platform] = Field(min_length=1, max_length=2)
+    platforms: list[Platform] = Field(min_length=1, max_length=5)
 
     @field_validator("title")
     @classmethod
@@ -59,6 +61,11 @@ class AssetRead(BaseModel):
     height: int
     codec: str
     created_at: datetime
+
+    @computed_field
+    @property
+    def kind(self) -> Literal["video", "image", "audio", "document"]:
+        return asset_kind(self.content_type)
 
     @field_validator("created_at")
     @classmethod

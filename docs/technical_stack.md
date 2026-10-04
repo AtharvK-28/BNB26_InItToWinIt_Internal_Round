@@ -7,7 +7,7 @@ Updated: 4 October 2026. Free-first prototype; current source code and requireme
 | Layer | Implemented technology | Responsibility |
 | --- | --- | --- |
 | Frontend | Next.js 16.3.8, React 19.2.8, TypeScript; Node 24 / pnpm | Project workspace, brief, source/candidate review, progress and downloads |
-| Design | Native CSS tokens, bundled Manrope/DM Sans, Lucide | Bespoke studio identity and accessible controls |
+| Design | Tailwind CSS v4 tokens (Airbnb-style, see DESIGN.md), Figtree via next/font, Lucide | Familiar, uncluttered studio UI with accessible controls |
 | Backend | Python 3.12, FastAPI, Pydantic, Uvicorn | Authenticated APIs, domain rules, schema validation and job submission |
 | Persistence | Supabase Postgres, SQLAlchemy, psycopg, Alembic | Projects, assets, evidence, runs, cuts and exports; private schemas |
 | Authentication / files | Supabase Auth and private Storage | Verified JWT identity, tenant isolation and expiring media links |

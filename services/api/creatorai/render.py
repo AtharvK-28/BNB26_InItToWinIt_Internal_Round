@@ -8,14 +8,17 @@ from html import escape
 
 from creatorai.ai import ProviderError
 from creatorai.demo_schemas import ClipDocument
-from creatorai.media import media_tools
+from creatorai.media import IMAGE_FORMATS, media_tools, probe
 from creatorai.understanding import command
 
 PRESETS = {
     "youtube_shorts": (720, 1280),
     "instagram_reel": (720, 1280),
+    "tiktok": (720, 1280),
     "youtube_video": (1280, 720),
+    "square_post": (720, 720),
 }
+HOOK_SECONDS = 3.0
 
 
 def timestamp(seconds):
@@ -26,22 +29,35 @@ def timestamp(seconds):
     )
 
 
+def plain(text):
+    # Remove ASS override and HTML markup characters from creator-written text.
+    text = text.replace("\\", "").replace("{", "").replace("}", "")
+    return text.replace("<", "").replace(">", "").replace("\r", " ").replace("\n", " ")
+
+
 def subtitles(document):
     entries = []
     for segment in document.subtitle_segments:
         start, end = max(segment.start, document.start), min(segment.end, document.end)
         if end <= start:
             continue
-        # Remove ASS override and HTML markup characters from creator caption text.
-        text = segment.text.replace("\\", "").replace("{", "").replace("}", "")
-        text = text.replace("<", "").replace(">", "").replace("\r", " ").replace("\n", " ")
-        chunks = textwrap.wrap(text, width=34)
+        chunks = textwrap.wrap(plain(segment.text), width=34)
         pairs = ["\n".join(chunks[i : i + 2]) for i in range(0, len(chunks), 2)]
         for i, pair in enumerate(pairs):
             a = start + (end - start) * i / len(pairs) - document.start
             b = start + (end - start) * (i + 1) / len(pairs) - document.start
             entries.append(f"{len(entries) + 1}\n{timestamp(a)} --> {timestamp(b)}\n{pair}\n")
     return "\n".join(entries)
+
+
+def hook_track(document):
+    """The opening hook as on-screen text over the first seconds of the cut."""
+    text = plain(document.hook).strip()
+    if not text:
+        return ""
+    end = min(HOOK_SECONDS, document.end - document.start)
+    lines = "\n".join(textwrap.wrap(text, width=26)[:3])
+    return f"1\n{timestamp(0)} --> {timestamp(end)}\n{lines}\n"
 
 
 def cover_svg(document, thumbnail):
@@ -72,7 +88,44 @@ def cover_svg(document, thumbnail):
     )
 
 
-def render(source, folder, settings, document, preset, source_metadata=None):
+def cover_image(image, folder, settings):
+    """Fit a project image into the cover's picture area as a JPEG."""
+    ffmpeg, _ = media_tools(settings)
+    target = folder / "cover-image.jpg"
+    command(
+        [
+            ffmpeg,
+            "-nostdin",
+            "-v",
+            "error",
+            "-protocol_whitelist",
+            "file,pipe",
+            "-format_whitelist",
+            IMAGE_FORMATS,
+            "-i",
+            str(image.resolve()),
+            "-vf",
+            "scale=720:640:force_original_aspect_ratio=increase,crop=720:640,format=yuvj420p",
+            "-frames:v",
+            "1",
+            "-update",
+            "1",
+            str(target),
+        ]
+    )
+    return target
+
+
+def render(
+    source,
+    folder,
+    settings,
+    document,
+    preset,
+    source_metadata=None,
+    music=None,
+    cover_source=None,
+):
     document = ClipDocument.model_validate(document)
     ffmpeg, _ = media_tools(settings)
     width, height = PRESETS[preset]
@@ -86,27 +139,45 @@ def render(source, folder, settings, document, preset, source_metadata=None):
         filters += (
             ",subtitles=captions.srt:force_style='Fontname=DejaVu Sans,Fontsize=18,MarginV=40'"
         )
+    hook = hook_track(document)
+    if hook:
+        (folder / "hook.srt").write_text(hook, encoding="utf-8")
+        # SRT force_style takes legacy SSA alignment: 6 is top center.
+        filters += (
+            ",subtitles=hook.srt:force_style='Fontname=DejaVu Sans,Fontsize=22,Bold=1,"
+            "Alignment=6,MarginV=60'"
+        )
     video = folder / "video.mp4"
+    inputs = ["-protocol_whitelist", "file,pipe", "-ss", str(document.start)]
+    inputs += ["-i", str(source.resolve())]
+    if music and document.music:
+        # A looping music bed under the cut's own sound (or alone, if the footage is silent).
+        streams = probe(source, settings, "mov,matroska,webm")["streams"]
+        speech = any(s["codec_type"] == "audio" for s in streams)
+        inputs += ["-protocol_whitelist", "file,pipe", "-stream_loop", "-1"]
+        inputs += ["-i", str(music.resolve())]
+        bed = f"[1:a:0]volume={document.music.volume:.3f}"
+        mix = f"{bed}[m];[0:a:0][m]amix=inputs=2:duration=first:normalize=0[a]"
+        maps = [
+            "-filter_complex",
+            f"[0:v:0]{filters}[v];" + (mix if speech else f"{bed}[a]"),
+            "-map",
+            "[v]",
+            "-map",
+            "[a]",
+        ]
+    else:
+        maps = ["-map", "0:v:0", "-map", "0:a?", "-vf", filters]
     command(
         [
             ffmpeg,
             "-nostdin",
             "-v",
             "error",
-            "-protocol_whitelist",
-            "file,pipe",
-            "-ss",
-            str(document.start),
-            "-i",
-            str(source.resolve()),
+            *inputs,
             "-t",
             str(document.end - document.start),
-            "-map",
-            "0:v:0",
-            "-map",
-            "0:a?",
-            "-vf",
-            filters,
+            *maps,
             "-c:v",
             "libx264",
             "-preset",
@@ -170,6 +241,9 @@ def render(source, folder, settings, document, preset, source_metadata=None):
             ),
         )
         archive.writestr("captions.srt", srt)
-        archive.writestr("caption.txt", document.caption)
-        archive.writestr("cover.svg", cover_svg(document, thumb))
+        if hook:
+            archive.writestr("hook.srt", hook)
+        archive.writestr("caption.txt", document.platform_captions.get(preset) or document.caption)
+        picture = cover_image(cover_source, folder, settings) if cover_source else thumb
+        archive.writestr("cover.svg", cover_svg(document, picture))
     return video, package

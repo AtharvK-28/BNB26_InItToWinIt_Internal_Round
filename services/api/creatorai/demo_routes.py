@@ -1,6 +1,7 @@
 """Owner-scoped demo APIs. AI runs never overwrite creator edits."""
 
 import time
+from datetime import UTC
 from typing import Annotated, Literal
 from uuid import UUID
 
@@ -22,10 +23,13 @@ from creatorai.demo_schemas import (
     RunRequest,
     now,
 )
+from creatorai.media import asset_kind
 from creatorai.storage import LocalStorage
 
 router = APIRouter()
 Owner = Annotated[str, Depends(get_owner)]
+# Renders need no AI, so a few can queue behind each other (one per output format).
+MAX_ACTIVE_EXPORTS = 5
 
 
 def owned(session, model, identifier, owner):
@@ -35,6 +39,15 @@ def owned(session, model, identifier, owner):
     if value is None:
         raise HTTPException(404, "This item could not be found.")
     return value
+
+
+def project_asset(session, asset_id, project_id, owner, kind, label):
+    asset = owned(session, Asset, asset_id, owner)
+    if asset.project_id != str(project_id):
+        raise HTTPException(404, f"This {label} could not be found in this project.")
+    if asset_kind(asset.content_type) != kind:
+        raise HTTPException(422, f"Choose {'a' if kind != 'image' else 'an'} {kind} file here.")
+    return asset
 
 
 @router.get("/projects/{project_id}/runs", response_model=list[RunRead])
@@ -67,12 +80,11 @@ def enqueue(project_id: UUID, body: RunRequest, request: Request, owner: Owner):
             ):
                 raise HTTPException(409, "This request ID belongs to a different task.")
             return existing
-        active = session.scalar(
-            select(Run.id)
-            .where(Run.owner_id == owner, Run.status.in_(["queued", "running"]))
-            .limit(1)
-        )
-        if active:
+        active = session.scalars(
+            select(Run.kind).where(Run.owner_id == owner, Run.status.in_(["queued", "running"]))
+        ).all()
+        exports_only = body.kind == "export" and all(kind == "export" for kind in active)
+        if active and not (exports_only and len(active) < MAX_ACTIVE_EXPORTS):
             raise HTTPException(
                 409, "One of your tasks is still working. Wait for it to finish first."
             )
@@ -89,9 +101,7 @@ def enqueue(project_id: UUID, body: RunRequest, request: Request, owner: Owner):
         if body.kind in {"analyze", "clips"}:
             if not body.asset_id:
                 raise HTTPException(422, "Select source footage first.")
-            asset = owned(session, Asset, body.asset_id, owner)
-            if asset.project_id != str(project_id):
-                raise HTTPException(404, "This footage could not be found in this project.")
+            asset = project_asset(session, body.asset_id, project_id, owner, "video", "footage")
             payload["asset_id"] = asset.id
         if body.kind == "export":
             if not body.clip_id or not body.clip_revision:
@@ -222,9 +232,7 @@ def clips(project_id: UUID, request: Request, owner: Owner):
 def manual_clip(project_id: UUID, body: ManualClip, request: Request, owner: Owner):
     with request.app.state.sessions() as session:
         project = owned(session, Project, project_id, owner)
-        asset = owned(session, Asset, body.asset_id, owner)
-        if asset.project_id != str(project_id):
-            raise HTTPException(404, "This footage could not be found in this project.")
+        asset = project_asset(session, body.asset_id, project_id, owner, "video", "footage")
         existing = session.get(Clip, str(body.request_id))
         if existing:
             if existing.owner_id != owner or existing.project_id != str(project_id):
@@ -288,6 +296,19 @@ def save_clip(clip_id: UUID, body: ClipUpdate, request: Request, owner: Owner):
             raise HTTPException(422, "The cut must stay inside its source footage.")
         if any(s.end > asset.duration for s in body.document.subtitle_segments):
             raise HTTPException(422, "Caption timestamps must stay inside the footage.")
+        if body.document.music:
+            project_asset(
+                session, body.document.music.asset_id, current.project_id, owner, "audio", "music"
+            )
+        if body.document.cover.image_asset_id:
+            project_asset(
+                session,
+                body.document.cover.image_asset_id,
+                current.project_id,
+                owner,
+                "image",
+                "cover image",
+            )
         result = session.execute(
             update(Clip)
             .where(Clip.id == str(clip_id), Clip.owner_id == owner, Clip.revision == body.revision)
@@ -316,16 +337,12 @@ def exports(project_id: UUID, request: Request, owner: Owner):
         ).all()
         return [
             {
-                key: getattr(row, key)
-                for key in [
-                    "id",
-                    "clip_id",
-                    "clip_revision",
-                    "preset",
-                    "bytes",
-                    "duration",
-                    "created_at",
-                ]
+                **{
+                    key: getattr(row, key)
+                    for key in ["id", "clip_id", "clip_revision", "preset", "bytes", "duration"]
+                },
+                # SQLite drops the offset; timestamps are stored in UTC.
+                "created_at": row.created_at.replace(tzinfo=row.created_at.tzinfo or UTC),
             }
             for row in rows
         ]

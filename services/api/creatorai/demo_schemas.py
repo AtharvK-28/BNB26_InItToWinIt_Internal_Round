@@ -9,6 +9,9 @@ class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
 
+Preset = Literal["youtube_shorts", "instagram_reel", "tiktok", "youtube_video", "square_post"]
+
+
 class Segment(StrictModel):
     start: float = Field(ge=0)
     end: float = Field(gt=0)
@@ -54,6 +57,13 @@ class Cover(StrictModel):
     subtitle_x: float = Field(default=0.08, ge=0, le=0.8)
     subtitle_y: float = Field(default=0.84, ge=0.1, le=0.95)
     theme: Literal["paper", "coral", "ink"] = "paper"
+    # An image from the project's assets replaces the frame from the cut.
+    image_asset_id: str | None = Field(default=None, max_length=36)
+
+
+class Music(StrictModel):
+    asset_id: str = Field(min_length=1, max_length=36)
+    volume: float = Field(default=0.25, ge=0, le=1)
 
 
 class ClipDocument(StrictModel):
@@ -65,15 +75,20 @@ class ClipDocument(StrictModel):
     source_quote: str = Field(default="", max_length=800)
     script_match: str = Field(default="", max_length=700)
     caption: str = Field(default="", max_length=2200)
+    # Per-format post copy; formats without an entry use `caption`.
+    platform_captions: dict[Preset, str] = Field(default_factory=dict)
     crop_x: float = Field(default=0.5, ge=0, le=1)
     subtitles: bool = True
     subtitle_segments: list[Segment] = Field(default_factory=list, max_length=120)
     cover: Cover = Field(default_factory=Cover)
+    music: Music | None = None
 
     @model_validator(mode="after")
     def valid_cut(self):
         if self.end <= self.start or self.end - self.start > 60:
             raise ValueError("A clip must run forward and last at most 60 seconds.")
+        if any(len(text) > 2200 for text in self.platform_captions.values()):
+            raise ValueError("Keep each platform caption under 2,200 characters.")
         return self
 
 
@@ -109,7 +124,7 @@ class RunRequest(StrictModel):
     asset_id: UUID | None = None
     clip_id: UUID | None = None
     clip_revision: int | None = Field(default=None, ge=1)
-    preset: Literal["youtube_shorts", "instagram_reel", "youtube_video"] = "youtube_shorts"
+    preset: Preset = "youtube_shorts"
     instruction: str = Field(default="", max_length=2000)
 
 

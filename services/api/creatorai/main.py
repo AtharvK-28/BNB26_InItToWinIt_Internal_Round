@@ -20,7 +20,7 @@ from creatorai.config import Settings
 from creatorai.database import Asset, Project, make_database
 from creatorai.demo_routes import router as demo_router
 from creatorai.jobs import JobEngine
-from creatorai.media import inspect_media, media_tools, receive
+from creatorai.media import KINDS, inspect_asset, media_tools, receive
 from creatorai.migrate import upgrade_database
 from creatorai.schemas import AssetRead, ProjectFields, ProjectRead, ProjectUpdate
 from creatorai.storage import LocalStorage, make_storage
@@ -102,6 +102,7 @@ def create_app(database_url: str | None = None, settings: Settings | None = None
             "media_import": ready,
             "max_upload_mb": config.max_upload_mb,
             "max_clip_seconds": config.max_clip_seconds,
+            "max_audio_seconds": config.max_audio_seconds,
             "ai_ready": bool(config.gemini_api_key.get_secret_value()),
             "worker_ready": config.enable_demo_worker,
             "ai_model": config.gemini_model,
@@ -179,8 +180,12 @@ def create_app(database_url: str | None = None, settings: Settings | None = None
         stored = []
         try:
             suffix = Path(file.filename or "").suffix.lower()
-            if suffix not in {".mp4", ".webm", ".mov"}:
-                raise HTTPException(422, "Choose an MP4, WebM, or H.264 MOV clip.")
+            if suffix not in KINDS:
+                raise HTTPException(
+                    422,
+                    "Choose a video (MP4, WebM, MOV), image (JPG, PNG, WebP, GIF), "
+                    "audio (MP3, WAV, M4A, AAC, OGG, FLAC) or document (PDF, TXT, MD, SRT).",
+                )
             with tempfile.TemporaryDirectory(prefix="creatorai-", dir=config.data_dir) as temp:
                 source, thumbnail = Path(temp) / f"original{suffix}", Path(temp) / "thumbnail.jpg"
                 size, digest = receive(file, source, config.max_upload_mb * 1024 * 1024)
@@ -194,7 +199,7 @@ def create_app(database_url: str | None = None, settings: Settings | None = None
                     )
                     if existing:
                         return existing
-                media = inspect_media(source, thumbnail, config)
+                media = inspect_asset(KINDS[suffix], source, thumbnail, config)
                 asset_id = str(uuid4())
                 prefix = f"{owner}/{project_id}/{asset_id}"
                 original_key, thumbnail_key = (
@@ -208,7 +213,7 @@ def create_app(database_url: str | None = None, settings: Settings | None = None
                     stored.append(key)
                     app.state.storage.put(key, path, content_type)
                 filename = (
-                    (file.filename or "Untitled clip").replace("\\", "/").split("/")[-1][:240]
+                    (file.filename or "Untitled file").replace("\\", "/").split("/")[-1][:240]
                 )
                 asset = Asset(
                     id=asset_id,

@@ -182,6 +182,7 @@ def test_edit_render_package_and_account_isolation(setup):
         start=0.25,
         end=1.75,
         caption="An actual rendered fixture",
+        hook="Watch {\\an1}<b>this</b>",
         subtitle_segments=[{"start": 0.25, "end": 1.5, "text": "Editable captions"}],
     )
     edited = client.put(f"/clips/{clip['id']}", json={"revision": 1, "document": clip["document"]})
@@ -232,6 +233,11 @@ def test_edit_render_package_and_account_isolation(setup):
         assert package.read("caption.txt").decode() == "An actual rendered fixture"
         assert b"title-layer" in package.read("cover.svg")
         assert b"Editable captions" in package.read("captions.srt")
+        # The hook is burned in over the cut's first 1.5s, with markup stripped.
+        assert package.read("hook.srt").decode().splitlines()[1:3] == [
+            "00:00:00,000 --> 00:00:01,500",
+            "Watch an1bthis/b",
+        ]
     app.dependency_overrides[get_owner] = lambda: owner
     for path in [
         f"/projects/{project['id']}/runs",
@@ -297,3 +303,96 @@ def test_failed_provider_is_explicit_and_cached_index_is_reused(setup):
     result = client.get(f"/runs/{failed['id']}").json()
     assert result["status"] == "failed" and "quota" in result["error"]
     assert result["output"] == {}
+
+
+def test_formats_queue_together_with_music_cover_and_platform_copy(setup, tmp_path):
+    app, client, project, asset = setup
+    pid = project["id"]
+
+    def make(name, *args):
+        path = tmp_path / name
+        command = [app.state.settings.ffmpeg_binary, "-v", "error", "-y", *args, str(path)]
+        subprocess.run(command, check=True, timeout=30)
+        return path.read_bytes()
+
+    def upload(name, data):
+        result = client.post(f"/projects/{pid}/assets", files={"file": (name, data)})
+        assert result.status_code == 201, result.text
+        return result.json()
+
+    color = ["-f", "lavfi", "-i", "testsrc2=size=320x180:rate=12"]
+    talking = upload(
+        "talking.mp4",
+        make(
+            "talking.mp4",
+            *color,
+            *["-f", "lavfi", "-i", "sine=frequency=440", "-t", "2", "-shortest"],
+            *["-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac"],
+        ),
+    )
+    music = upload("bed.wav", make("bed.wav", "-f", "lavfi", "-i", "sine=frequency=220:d=1"))
+    image = upload("cover.png", make("cover.png", *color, "-frames:v", "1"))
+    assert [item["kind"] for item in (talking, music, image)] == ["video", "audio", "image"]
+    manual = {"request_id": str(uuid4()), "asset_id": music["id"]}
+    assert client.post(f"/projects/{pid}/clips", json=manual).status_code == 422
+    assert start_status(client, pid, "export", asset_id=image["id"]) == 422
+
+    # Silent footage gets the bed alone; footage with sound gets both mixed.
+    for source in (asset, talking):
+        manual = {"request_id": str(uuid4()), "asset_id": source["id"]}
+        clip = client.post(f"/projects/{pid}/clips", json=manual).json()
+        document = clip["document"]
+        document.update(
+            end=1.5,
+            caption="Default copy",
+            platform_captions={"tiktok": "TikTok copy"},
+            music={"asset_id": music["id"], "volume": 0.3},
+        )
+        document["cover"]["image_asset_id"] = image["id"]
+        wrong = {**document, "music": {"asset_id": image["id"], "volume": 0.3}}
+        assert (
+            client.put(f"/clips/{clip['id']}", json={"revision": 1, "document": wrong}).status_code
+            == 422
+        )
+        saved = client.put(f"/clips/{clip['id']}", json={"revision": 1, "document": document})
+        assert saved.status_code == 200, saved.text
+        runs = [
+            start(client, pid, "export", clip_id=clip["id"], clip_revision=2, preset=preset)
+            for preset in ("tiktok", "square_post")
+        ]
+        assert app.state.jobs.process_next() and app.state.jobs.process_next()
+        for run, (width, height, caption) in zip(
+            runs, [(720, 1280, "TikTok copy"), (720, 720, "Default copy")], strict=True
+        ):
+            assert client.get(f"/runs/{run['id']}").json()["status"] == "completed"
+            links = client.get(f"/exports/{run['id']}/links").json()
+            rendered = tmp_path / f"{run['id']}.mp4"
+            rendered.write_bytes(client.get(links["video"]).content)
+            probe = subprocess.run(
+                [
+                    app.state.settings.ffprobe_binary,
+                    "-v",
+                    "error",
+                    "-show_streams",
+                    "-of",
+                    "json",
+                    str(rendered),
+                ],
+                capture_output=True,
+                check=True,
+            )
+            streams = json.loads(probe.stdout)["streams"]
+            video = next(s for s in streams if s["codec_type"] == "video")
+            assert (video["width"], video["height"]) == (width, height)
+            assert any(s["codec_type"] == "audio" for s in streams)
+            with zipfile.ZipFile(io.BytesIO(client.get(links["package"]).content)) as package:
+                assert package.read("caption.txt").decode() == caption
+                plan = json.loads(package.read("edit-plan.json"))
+                assert plan["document"]["music"]["asset_id"] == music["id"]
+    exports = client.get(f"/projects/{pid}/exports").json()
+    assert len(exports) == 4 and all(e["created_at"].endswith(("Z", "+00:00")) for e in exports)
+
+
+def start_status(client, pid, kind, **fields):
+    payload = {"kind": kind, "request_id": str(uuid4()), **fields}
+    return client.post(f"/projects/{pid}/runs", json=payload).status_code

@@ -262,3 +262,49 @@ def test_raw_database_password_and_hosted_guards():
         Settings(_env_file=None, app_mode="cloud", database_url="sqlite:///test.db")
     with pytest.raises(ValueError):
         Settings(_env_file=None, allowed_hosts="*")
+
+
+def test_images_audio_and_documents_are_stored_with_previews(media_app, tools, tmp_path):
+    def make(name, *args):
+        path = tmp_path / name
+        subprocess.run([tools[0], "-v", "error", "-y", *args, str(path)], check=True, timeout=30)
+        return path.read_bytes()
+
+    color = ["-f", "lavfi", "-i", "testsrc2=size=320x180", "-frames:v", "1"]
+    files = {
+        "still.png": (make("still.png", *color), "image", "image/png"),
+        "photo.jpg": (make("photo.jpg", *color), "image", "image/jpeg"),
+        "voice.m4a": (
+            make("voice.m4a", "-f", "lavfi", "-i", "sine=d=1.5", "-c:a", "aac"),
+            "audio",
+            "audio/mp4",
+        ),
+        "bed.wav": (make("bed.wav", "-f", "lavfi", "-i", "sine=d=1"), "audio", "audio/wav"),
+        "brief.md": (b"# Brief\nShow the desk, then the cable tray.", "document", "text/plain"),
+        "brand.pdf": (b"%PDF-1.4\n%%EOF\n", "document", "application/pdf"),
+    }
+    with TestClient(media_app) as client:
+        pid = project(client)
+        for name, (data, kind, content_type) in files.items():
+            result = client.post(f"/projects/{pid}/assets", files={"file": (name, data)})
+            assert result.status_code == 201, (name, result.text)
+            asset = result.json()
+            assert asset["kind"] == kind and asset["content_type"].startswith(content_type), name
+            if kind == "audio":
+                assert 0.9 <= asset["duration"] <= 1.6
+            if kind == "image":
+                assert (asset["width"], asset["height"]) == (320, 180)
+            links = client.get(f"/assets/{asset['id']}/links").json()
+            thumbnail = client.get(links["thumbnail"])
+            assert thumbnail.status_code == 200 and thumbnail.content[:2] == b"\xff\xd8"
+            assert client.get(links["original"]).content == data
+        for name, data in (
+            ("fake.pdf", b"hello"),
+            ("binary.txt", b"\x00\x01\x02"),
+            ("noise.png", b"not an image"),
+            ("noise.mp3", b"not audio"),
+            ("page.html", b"<script></script>"),
+        ):
+            result = client.post(f"/projects/{pid}/assets", files={"file": (name, data)})
+            assert result.status_code == 422, name
+        assert len(client.get(f"/projects/{pid}/assets").json()) == len(files)
