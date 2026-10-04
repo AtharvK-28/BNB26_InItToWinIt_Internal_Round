@@ -60,7 +60,6 @@ def create_app(database_url: str | None = None, settings: Settings | None = None
     app = FastAPI(title="CreatorAi API", version="0.2.0", lifespan=lifespan)
     app.include_router(demo_router)
     app.add_middleware(UploadLimit, max_bytes=(config.max_upload_mb + 1) * 1024 * 1024)
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=config.hosts)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=config.origins,
