@@ -1,84 +1,74 @@
-# Agents and durable creator workflows
+# Multi-agent creator workflow
 
-Status: implementation baseline selected. Use LangGraph Python with Postgres checkpoints, executed in Celery worker segments. [technical_stack.md](technical_stack.md) defines the integration boundaries. Tools and graph behavior are not implemented yet.
+Updated: 4 October 2026. This is the target architecture, not a claim that multiple agents are already implemented. This document and product_requirements.md define the current direction; earlier single-agent/editor plans are superseded.
 
-## What makes this an agent
+## Current implementation versus target
 
-An agent has a concrete objective, typed tools, observable results, persistent task state, and a bounded ability to choose its next action. It can notice insufficient evidence, request a denser inspection, revise its plan, and stop for creator input. Retrieval is one tool it may use; retrieval alone is not the agent.
+Today, CreatorAi has one LangGraph clip agent with a tool loop, durable checkpoints and creator review. Story drafting and footage indexing are separate model calls/jobs, not independently acting agents. Multiple tools, prompts or worker processes do not make that implementation multi-agent.
 
-Use deterministic workflows for media extraction, validation, and rendering. Use agent decisions for interpretation and editorial choices. A model does not need to decide how to run ffprobe, whether a time range is out of bounds, or how to retry an expired storage URL.
+The next increment introduces three specialist agents with distinct objectives, restricted tools, local state and explicit handoffs. They may share one Gemini adapter, one worker and one deployment. Multi-agent describes responsibility and execution, not the number of servers or different model providers.
 
-## Recommended initial organization
+## Agent responsibilities
 
-Start with one coordinator and explicit workflow stages, not a swarm of independent personalities. Writing, footage research, and edit planning can be role-specific subroutines of the same durable run. Separate them into agents only when independent evaluation or tool policies justify it.
+| Agent | Objective and tools | Output / boundary |
+| --- | --- | --- |
+| Story Agent | Read the brief and available source facts; generate or revise hooks, script and supporting copy | Versioned StoryDraft. Cannot claim unsourced facts or silently replace the creator's approved story |
+| Footage Research Agent | Search the saved asset index, retrieve timestamped speech and inspect selected visual windows; resolve evidence requests | EvidenceBundle with asset/range references, quotes, actual observations, uncertainty and missing matches. Cannot author the final cut or mutate originals |
+| Clip Director | Read the approved story and evidence; choose coherent moments; request missing evidence from Research; propose/revise source-grounded cuts | ClipPlan with candidates, rationale and source references. Cannot treat a requested script line as spoken footage or fabricate a missing shot |
+
+A coordinating LangGraph workflow routes tasks, enforces budgets and persists handoffs. The coordinator does not need its own model call when the route is known. Role-specific subgraphs provide separate context/tool policies, decision loops and resumable state. These are substantive agents only when they choose actions and evaluate tool results; renaming fixed prompts into agent classes does not meet the acceptance criteria.
+
+A dedicated quality-review agent is optional later, after we establish a useful independent checking task. Do not add agents merely to increase the count. Platform presets, validation, extraction and FFmpeg rendering remain deterministic services/jobs.
+
+## Flow and feedback
 
 ```mermaid
-flowchart LR
-    B[Brief and editable script] --> A[Analyze assets]
-    A --> M[Match script and retrieve moments]
-    M --> P[Propose editable clips]
-    P --> R[Creator review]
-    R --> E[Validate and apply edits]
-    E --> V[Platform variants]
-    V --> X[Render and export]
-    X --> U[Optional reviewed publication]
+flowchart TD
+    B[Creator brief and source assets] --> C[Coordinator: persisted run and shared budget]
+    C --> S[Story Agent: draft or use approved script]
+    S --> R[Footage Research Agent: gather grounded evidence]
+    R --> D[Clip Director: propose coherent cuts]
+    D -->|Missing evidence request| R
+    D --> V[Deterministic bounds and evidence validation]
+    V --> H[Creator review]
+    H -->|Revision feedback| C
+    H -->|Approve| P[Platform presets and FFmpeg job]
+    P --> E[MP4 plus portable editable package]
 ```
 
-The analysis stage can run as fixed jobs. Within matching/planning, the coordinator chooses among evidence tools, observes their results, and performs bounded refinement. The creator sees useful progress and proposed artifacts rather than internal role conversations.
+Script-first: Story proposes a draft, the creator approves it, then Research checks what the footage actually supports. Footage-first: Research collects facts first; Story drafts from those facts before Director proposes cuts. An existing approved script skips drafting. Cached evidence skips redundant analysis. The coordinator routes revision feedback to the responsible agent rather than rerunning every stage.
 
-## Frameworks considered during research
+If Director needs another take or cannot verify a visual, it emits an EvidenceRequest. Research returns new evidence or an explicit missing-match result. Cap this feedback loop. Stop for the creator when the material cannot support the requested output.
 
-| Option | Good fit | Limits and setup implications |
-| --- | --- | --- |
-| [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) | Explicit state graph, branching tool loops, persistent checkpoints and review pauses; fits a Python media backend | Requires implementing tools and job execution. A graph is not a GPU queue. Use the library in our own service; hosted products have separate deployment terms |
-| [Inngest](https://www.inngest.com/docs/durable-execution) with [AgentKit](https://agentkit.inngest.com/concepts/agents) where needed | Event-driven steps, retries and waits; attractive for a TypeScript-first team | Still needs dedicated media workers. Compare local and deployed runtime behavior and boundaries before choosing |
-| [Temporal](https://docs.temporal.io/) | Durable long-running infrastructure if operations become more demanding | More infrastructure/learning than we need to prove the first creator flow |
+## Explicit handoff contracts
 
-Final choice: LangGraph Python library for the adaptive agent, Celery/Valkey for work delivery, and Postgres for checkpoints and product-visible run/job state. Inngest and Temporal remain research alternatives, not active dependencies. LangGraph state and Celery work delivery solve different responsibilities; do not use Celery as a second editorial workflow engine.
+All handoffs are schema-validated persisted records, not freeform agent chat:
 
-[LangGraph persistence](https://docs.langchain.com/oss/python/langgraph/persistence) distinguishes per-run checkpoints from longer-lived stores. [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) support pausing for external input. Replayed node code can execute again, so side effects need idempotency even when checkpoints exist. These capabilities were verified in docs, not exercised in CreatorAi.
+- RunContext: owner/project/run IDs, requested goal, source and story versions, remaining budget and decision history.
+- StoryDraft: hooks, script, supporting copy, source references, revision and creator approval status.
+- EvidenceRequest: story beat or candidate range, specific unresolved question and remaining inspection budget.
+- EvidenceBundle: source asset/version, transcript ranges/quotes, inspected-window observations, coverage/uncertainty and analysis provenance.
+- ClipPlan: candidate IDs, source in/out points, supporting evidence IDs, story connection, caption/crop instructions and review status.
+- ExportPlan: approved candidate/revision, explicit preset and structured media operations; consumed by deterministic rendering code.
 
-## Proposed tool contracts
+Freeze input versions. Agent proposals never overwrite newer creator work. Record who produced each artifact, its upstream inputs and the tools used. Checkpoint state stores references and compact relevant results, not repeated full footage.
 
-| Tool | Input | Observable result |
-| --- | --- | --- |
-| search_assets | Project filter, query, evidence type | Authorized asset/window identifiers, ranked results, coverage state |
-| read_transcript | Asset and source time range | Words, timing, utterances, available quality flags |
-| inspect_video_window | Asset, source range, question, sampling budget | Timestamped observations and uncertainty |
-| match_script_beats | Versioned script and candidate evidence | Matches, alternatives, missing beats |
-| propose_clip | Source references, intent, output format | Validated candidate edit document with provenance |
-| apply_edit_operations | Expected project version and typed operations | New immutable revision or a version conflict |
-| render_preview | Revision, preset | Job ID, status, preview artifact |
-| validate_variant | Revision and versioned platform preset | Concrete layout/media issues |
-| export_variant | Reviewed revision and preset | Export job and downloadable artifact |
+## Free-tier execution and permissions
 
-Publication is a later tool with an explicit destination, creator authorization, and a saved provider result. Tools take asset identifiers and validated structured arguments. They do not accept arbitrary shell commands from the model.
+Keep the existing database queue and one designated worker for a shared Supabase demo. LangGraph owns coordination/agent state; workers execute it. Celery, Redis, paid agent hosting and GPU services are not prerequisites.
 
-## Example of adaptive behavior
+Carry a shared request/tool/inspection budget across all agent handoffs. Do not give each specialist the entire old single-agent budget. Initial clip-run target: at most six reasoning calls across the specialists, eight tool calls and two visual-window inspections, with the existing request spacing. An uncached index or explicitly requested story draft is separately accounted for. Persist usage by agent and for the whole run; free quota limits still apply.
 
-Request: make a short clip of the actual camera demonstration, with the explanation that goes with it.
+Agents use allowlisted typed tools; no shell, arbitrary SQL, broad filesystem access or direct publication. Deterministic code checks ownership, timing bounds, evidence coverage and render settings. A provider quota/unavailable failure stops safely; no automatic model retry or paid fallback. Stop future work on cancellation and retain compatible completed evidence.
 
-The agent searches demonstration candidates, reads the associated transcript, and inspects a video window. If it finds speech about the feature but no visible demonstration, it searches nearby B-roll or another asset. It expands the successful window to include the setup and payoff, proposes an editable draft, and reports a missing visual if none exists. It does not fabricate footage or silently label a transcript match as visual proof.
+## Next implementation steps and completion checks
 
-## State and reliability
+1. Extract the current clip agent's search/inspection behavior into a Research subgraph and its selection/proposal behavior into a Director subgraph.
+2. Convert Story generation into a bounded tool-using drafting/revision subgraph; reuse the existing generation adapter rather than installing another framework.
+3. Introduce the typed handoff records and a coordinator; migrate their persistence deliberately.
+4. Route creator feedback, checkpoint each handoff and surface useful activity such as gathering evidence or revising a cut.
+5. Verify with mocked models first; use only a small explicit live check when needed.
 
-Persist project ID, script and asset versions, evidence identifiers, candidate revisions, completed tool results, job IDs, budget, coverage, and creator decisions. Store bytes in object storage, not model messages or checkpoint blobs. Long-lived creator preferences are separate from task state.
+Acceptance: Director requests missing evidence and Research answers or reports a gap; a restart resumes the correct specialist; creator revisions affect only the necessary stages; all stages share one budget; output artifacts retain source evidence and agent provenance. A diagram or three sequential prompts alone does not pass.
 
-Bound the run: maximum tool calls, visual windows, tokens, elapsed time, and cost. Retry transient failures with limits; do not retry an invalid script match indefinitely. A job waiting for review should not hold a GPU worker. Cancellation stops future work, while preserving completed derivatives for reuse.
-
-Use stable idempotency keys for external effects and render jobs. Checkpointing does not guarantee exactly-once publication. Persist the external ID and reconcile uncertain provider responses before retrying.
-
-Every proposed edit names its source and expected project revision. If the creator edits while an agent runs, stage the agent's proposal for reconciliation; never replace a newer project automatically. Original assets remain immutable.
-
-## Quick setup spike
-
-1. Create one persisted run with a few fixed graph stages and a narrowly bounded evidence-search loop.
-2. Implement search_assets, read_transcript, inspect_video_window, and propose_clip against the same asset index.
-3. Add a creator review pause that resumes with selection or edit feedback.
-4. Dispatch a render job outside the graph request and resume from its result.
-5. Expose simple progress events to the UI: matching material, preparing drafts, ready for review.
-6. Restart a worker mid-run and verify completed extraction is reused, edits remain versioned, and effects are not duplicated.
-
-Quick framework setup is feasible. Reliable semantic matching, editable rendering, and real creator usefulness still require engineering and evaluation; installing an agent framework does not complete those parts.
-
-No agent runtime, packages, services, or API credentials were installed during this planning pass.
+The inbuilt video/image editor is out of scope. Review, approval, revision requests and external-editable output are required; manual timeline/canvas editing is not.

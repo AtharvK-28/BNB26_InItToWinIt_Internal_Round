@@ -1,34 +1,21 @@
-# Free-first prototype plan
+# Free-first prototype constraints
 
-Founder constraint, 4 October 2026: this is a prototype; keep it mostly free and explore cheap options only where they help. This supersedes the mandatory paid-service assumptions in the earlier deployment plan.
+Updated: 4 October 2026. Supabase and Gemini are configured and the local demo works. Public deployment remains deferred. The current direction is a multi-agent workflow without an inbuilt editor.
 
-## Now: no service bill
+## Retain the inexpensive base
 
-Run Next.js and FastAPI on the development machine. Use SQLAlchemy with SQLite for the project/brief milestone. Add local files and CPU media tools in the media milestone. No provider account, external inference, cloud storage, always-on worker, or GPU is required today. Local hardware, disk space, and electricity still bound the workload.
+Use the current Next.js/FastAPI application, Supabase Auth/Postgres/private Storage, Gemini adapter, LangGraph library, Postgres-backed job queue and FFmpeg. No paid agent platform, Redis/Celery broker, dedicated GPU or editor SDK is required for the next increment. Local mode remains available through SQLite/local files.
 
-Keep Python business logic separate from the web UI. SQLite is a development adapter; the project identifiers, validation, and optimistic revision contract are retained when we introduce Postgres. Install features when their milestone needs them, rather than installing the entire selected stack immediately. Plain token-based CSS is sufficient for this shell; Tailwind/Radix remain optional additions for later interactions. Native inputs avoid unnecessary custom-control complexity.
+The proposed Story, Research and Director agents share infrastructure and a whole-run budget. Splitting responsibilities must not multiply the old request/inspection limits. Reuse source analysis, pass compact evidence, skip unchanged stages and stop on quota failures without automatic retries or paid fallback. Use mocked providers for most development checks.
 
-## Hosted options investigated
+One designated worker handles a shared Supabase demo. Free sleeping hosting pauses progress; durable jobs/checkpoints remain stored. A separate always-on worker is a later operational decision, not a prerequisite for local development.
 
-These are verified upstream offers, not provisioned resources. Recheck quotas and terms before deploying.
+## Current limits and delivery order
 
-| Option | Prototype fit | Limitation that matters |
-| --- | --- | --- |
-| [Supabase Free](https://supabase.com/pricing) | Hosted Postgres and Auth when we add accounts | 500 MB database, 1 GB file storage, 50 MB maximum single upload, 5 GB egress; inactive projects pause. Free storage cannot be our unrestricted raw-footage upload path. |
-| [Render free web service](https://render.com/docs/free) | Lightweight demo API with external database | Sleeps after 15 minutes idle; local files/SQLite disappear on restart or sleep; free background workers unavailable. Persist in Postgres before using it. |
-| [Vercel Hobby](https://vercel.com/docs/plans/hobby) | Personal noncommercial frontend demo | Noncommercial personal-use restriction. Verify project eligibility before choosing it for a team/commercial product. |
-| [Modal Starter](https://modal.com/pricing) | Optional GPU experiment for a later media benchmark | Advertised monthly compute credits are capped; overage and shared endpoints can be billed. This is not unlimited free inference. |
-| [Gemini API free tier](https://ai.google.dev/gemini-api/docs/pricing) | Optional reasoning adapter, subject to model/account quota | Model-specific availability/rate limits; free-tier data-use terms differ from paid. Verify the exact model and account before wiring it in. |
+- Source footage: up to 40 MB / 180 seconds; bounded CPU extraction/rendering.
+- Keep current bounded requests, tool calls, visual inspections and spacing while introducing shared agent accounting.
+- Next: typed handoffs, specialist subgraphs, missing-evidence feedback, review/export UX and tests.
+- Then: verify Vercel/Render deployment and collect representative quality feedback.
+- Later: alignment/tracking, publication and intelligence when justified by real need.
 
-No cloud services, billing accounts, or model calls were enabled by this increment. The full Render API + agent worker + media worker + persistent broker topology remains a later option, not a prototype prerequisite.
-
-## How we add the remaining stack
-
-1. **Foundation now:** projects and editable briefs, real persistence, clean interface.
-2. **Material next:** upload a small real clip, inspect with ffprobe, save original plus metadata, thumbnail and player; no inference needed yet. Add bounded local storage and upload limits.
-3. **Understanding:** benchmark CPU faster-whisper with a smaller model and cached frame sampling on our actual clips; compare quality/latency before committing to large-v3 or a paid GPU. Larger-model baseline remains a target, not a hardware assumption.
-4. **Story tools/agents:** integrate LangGraph with real typed project/media tools and persisted review checkpoints; use a free quota or a local reasoning adapter where it meets measured requirements. No simulated AI success.
-5. **Editable cuts/export:** versioned timeline plus deterministic FFmpeg; add the focused editor controls incrementally.
-6. **Shared demo:** Supabase Auth/Postgres, tenant isolation, cloud media storage strategy, then hosted frontend/API. Separate durable processing from sleeping free HTTP services. Any local worker requires the machine to stay online; document that availability.
-
-Choose a paid component only after a measured bottleneck or an actual demo requirement makes its purpose clear. Record the reason, expected cap, fallback, and cost before provisioning it.
+Do not expand editor scope or provision paid services to make the agent architecture look more sophisticated. Free-tier quotas, availability and terms must be rechecked before public deployment. See human_setup.md for service configuration and collaborator_setup.md for another PC.

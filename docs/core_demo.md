@@ -2,12 +2,14 @@
 
 Updated 4 October 2026. Public deployment is postponed; the local frontend/API use the configured Supabase project.
 
+Scope correction: this is a record of the existing single-agent implementation, not the target multi-agent architecture. Story and indexing jobs are fixed AI steps; only the clip workflow is currently an adaptive agent. [Agents and workflows](agents_and_workflows.md) defines the specialist-agent upgrade. An inbuilt video/image editor is out of current scope; existing controls below are experimental extras, while the structured export package remains required.
+
 ## The working path
 
 1. **Material:** import MP4/WebM/H.264 MOV footage, up to 40 MB and 180 seconds. Originals stay private and immutable, with metadata, thumbnails and SHA-256 identities.
 2. **Story:** save an idea or script, then request hooks, a working script, two titles and supporting copy. AI results are separate saved runs. Choosing an opening fills the editor; the creator explicitly saves it.
 3. **Cuts:** choose footage and a goal. A tool-using LangGraph agent reads the saved story, searches timestamped speech, inspects actual frames, and proposes up to three cuts. A durable interrupt waits for approval or revision feedback. A manual cut requires no AI call.
-4. **Edit:** change in/out points, hook, title, post caption, horizontal framing, caption text and timing. Move two cover text layers, or use keyboard-accessible position controls. Saves check revisions; unsaved edits recover within the same tab.
+4. **Existing experimental controls (outside current scope):** change in/out points, hook, title, caption, framing and cover text layers. These were implemented and tested previously; they are not required editor capabilities or the next development priority. The scoped creator interaction is candidate review, approval and agent revision requests.
 5. **Deliver:** export Shorts/Reels at 720×1280 or landscape YouTube at 1280×720. Download a real H.264/AAC MP4 and ZIP with the edit document, source identity, SRT, caption and layered SVG cover. Direct social publishing is deferred.
 
 ## AI and free-tier controls

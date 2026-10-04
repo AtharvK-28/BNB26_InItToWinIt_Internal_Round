@@ -2,6 +2,8 @@
 
 Updated: 4 October 2026. Current increment: **the working core creator demo**.
 
+Founder scope correction: the next increment is a multi-agent system with explicit specialist handoffs. The current code has one adaptive clip agent plus fixed story/indexing steps; it must not be presented as an implemented multi-agent system. Inbuilt video/image editors are excluded from current scope. The tested manual editing controls below are historical implementation extras, not required deliverables. See product_requirements.md and agents_and_workflows.md for the authoritative direction.
+
 ## Working product
 
 The application now follows Material → Story → Cuts → Deliver. The original application remains under `archive/legacy-app-2026-10-04/` with its 113-file manifest; the active app is the new pnpm/Python workspace.
@@ -10,11 +12,11 @@ The application now follows Material → Story → Cuts → Deliver. The origina
 - **Story:** Gemini generates hooks, a script, titles and a post caption from the saved brief. Applying a suggestion is explicit; it never silently overwrites the creator's text.
 - **Understanding:** one audio-and-sampled-frames pass produces a persisted timestamped transcript, visual observations and a summary. Later runs reuse this index, including after a drafting-model change. Timings are model estimates, not forced alignment.
 - **Clip agent:** an actual LangGraph workflow reads the script, searches transcript evidence, inspects candidate video frames and proposes validated cuts. Tools have fixed permissions and budgets. Proposals must quote the source transcript and fit an inspected window. The workflow checkpoints in Postgres for the cloud profile and pauses for creator approval or feedback.
-- **Editing:** saved revision-controlled cut documents expose source trim times, title, opening hook, post caption, horizontal crop, subtitle text/timings and two movable cover text layers. Creator edits survive subsequent renders. Unsaved drafts recover within the same browser tab; the current edit can also be downloaded as JSON.
+- **Experimental controls, outside current scope:** saved cut documents expose source trim times, title, hook, caption/crop and two cover text layers. These existing controls retain their tested behavior but are not an inbuilt-editor requirement. Structured output documents and external-editable packages remain in scope.
 - **Delivery:** real FFmpeg MP4 exports for YouTube Shorts, Instagram Reels and a landscape YouTube preset. A private ZIP contains the rendered video, source-linked edit plan, SRT, post caption and layered SVG cover. The prototype editor is deliberately small; the ZIP is portable source material, not a Premiere/Resolve timeline.
 - **Workflow:** durable database jobs, visible tool activity, stop/retry controls, expiring worker leases and restart recovery. A single worker can run with the API for the free demo, or separately through `python -m creatorai.worker`.
 
-The frontend uses custom studio tokens and local variable fonts with OpenDesign, Hallmark and targeted UI UX Pro Max guidance. Extra agent inputs, evidence, caption controls and cover editing sit in disclosures so the selected cut remains the main task.
+The frontend uses custom studio tokens and local variable fonts with OpenDesign, Hallmark and targeted UI UX Pro Max guidance. The next UI direction prioritizes source-grounded candidate review, approval and revision requests over the experimental editing surface.
 
 ## Persistence, security and deployment preparation
 
@@ -42,6 +44,6 @@ Disposable verification accounts, their projects, private media and checkpoint t
 
 Public Vercel/Render deployment is intentionally deferred at the user's request. Docker is not installed on this PC, so the Dockerfile has not been built locally; GitHub CI is prepared but no hosted run is claimed. Free hosting sleeps, and the API-hosted worker progresses only while its service is awake. Free Gemini availability and quotas are provider constraints.
 
-Estimated timestamps need a creator's listening pass. The current implementation supports short source footage and one source per cut, with horizontal crop rather than face tracking. Cover previews use the source thumbnail; exports use a frame from the rendered cut. The cover SVG currently uses a portrait canvas. Publishing/scheduling, larger-source processing, richer multi-track editing and Creator Intelligence remain deferred.
+Estimated timestamps need a creator's listening pass. The current implementation supports short source footage and one source per cut, with horizontal crop rather than face tracking. Cover previews use the source thumbnail; exports use a frame from the rendered cut. The cover SVG currently uses a portrait canvas. Publishing/scheduling, larger-source processing and Creator Intelligence remain deferred; inbuilt multi-track editing is excluded from current scope.
 
-Next: use the working demo, collect UX feedback, then verify the public deployment using [human_setup.md](human_setup.md). Add forced alignment or tracking only when the demo exposes a concrete need.
+Next: introduce coordinator/Story/Research/Director subgraphs, typed persisted handoffs, missing-evidence requests, selective revisions and one shared budget. Simplify the primary UX around review and export without expanding editor scope. Then verify public deployment using human_setup.md; alignment/tracking follows measured quality needs.

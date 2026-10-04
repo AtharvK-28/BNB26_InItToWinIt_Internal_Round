@@ -1,6 +1,8 @@
 # CreatorAi
 
-A free-first creator workspace with AI scripts/hooks, cached audio/visual understanding, a tool-using clip agent, editable cuts/captions/covers and real platform video exports. Supabase provides Auth, Postgres and private Storage. The previous application is preserved under `archive/`.
+A free-first creator workspace with AI scripts/hooks, cached audio/visual understanding, source-grounded clip proposals and real platform video exports. Supabase provides Auth, Postgres and private Storage. The previous application is preserved under `archive/`.
+
+Current runtime: one tool-using LangGraph clip agent plus separate drafting/indexing jobs. Next direction: a coordinator with Story, Footage Research and Clip Director agents, typed handoffs and shared budgets. An inbuilt video/image editor is out of scope; editable output is retained in portable source-linked files. See [multi-agent workflow](docs/agents_and_workflows.md) and [current requirements](docs/product_requirements.md).
 
 ## Run locally
 
@@ -40,7 +42,7 @@ Create a project, write an editable brief, and choose YouTube/Instagram destinat
 
 Open **Material** to add an MP4, WebM or H.264 MOV, up to 40 MB, 180 seconds and 4K. Imports retain the original, extract metadata and generate a real thumbnail. Duplicate bytes within a project reuse the existing asset. Upload progress, stop/reconcile, storage errors and expired preview links have recovery controls. Browser playback still depends on the file's codecs/container; H.264 MP4 is the most reliable supported input.
 
-Open **Story** for AI hooks and a script, **Cuts** for cached footage analysis and agent-selected moments, and **Deliver** for actual MP4/ZIP exports. All cuts remain editable, including timing, crop, captions and layered cover text. Review approval is explicit. See [core demo](docs/core_demo.md) for quotas, durable execution and the remaining limitations. Publishing to platform accounts and Creator Intelligence remain deferred.
+Open **Story** for AI hooks and a script, **Cuts** for cached footage analysis and agent-selected moments, and **Deliver** for actual MP4/ZIP exports. Review approval is explicit; the package retains structured cut instructions, captions and cover layers for external editing. Existing manual cut/cover controls are experimental extras outside the current scope and are not the next development priority. See [core demo](docs/core_demo.md) for the implemented runtime and quotas. Publishing to platform accounts and Creator Intelligence remain deferred.
 
 Cloud projects, runs, analyses, cuts and exports are restricted by authenticated owner. Storage stays private; preview/download links expire after five minutes. Add a server-only `GEMINI_API_KEY` and set `ENABLE_DEMO_WORKER=true` in the API env to enable queued AI/render work. Manual cuts and exports do not consume AI quota.
 

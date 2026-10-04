@@ -1,57 +1,43 @@
-# Product requirements and scope
+# Product requirements and current scope
 
-Updated: 4 October 2026.
+Updated: 4 October 2026. Founder correction: prioritize a multi-agent creator workflow; an inbuilt video/image editor is not in the current scope. This supersedes earlier editor-centric requirements. The original problem statement remains unchanged as the source brief.
 
-The founder subsequently requested a finalized, deployable technical stack and a build from scratch, with implementation beginning in the next turn. [technical_stack.md](technical_stack.md) and [deployment_plan.md](deployment_plan.md) now define that baseline. The earlier research alternatives remain context, not competing implementation choices.
+## Core experience
 
-## Confirmed founder direction
+A creator supplies a brief/script and footage. Specialist agents collaborate to draft supporting content, find source evidence and propose useful clips. The creator reviews candidates, requests revisions or approves them, then downloads platform-ready videos and portable editable source material.
 
-CreatorAi is an AI-powered creator operations platform, with a polished and intuitive experience. Build a substantive product rather than a collection of prompted API calls. Research established approaches and reuse suitable open-source foundations before inventing editors, orchestration, or video analysis infrastructure.
+Keep the application polished, simple and project-oriented. It is an AI content operations workspace, not a video editor, Canva clone or agent-management console.
 
-The app must understand text and visual content efficiently. Speed matters alongside useful understanding. The system should use proper agents with tools and workflows where they add value, rather than calling background prompts or a retrieval chatbot an agent.
+## In scope
 
-Keep the initial experience simple, creative, and easy to navigate. Avoid overwhelming creators with controls and avoid a generic generated dashboard. These constraints apply to the skeleton and interaction structure, not merely a final styling pass.
-
-AI-generated content must remain editable. Video outputs should support normal editing operations. Graphic outputs should retain movable elements in a structured composition instead of becoming one flattened image. The founder's incomplete phrase about generating a whole image is interpreted here as generating an editable composition; confirm that interpretation when designing the graphic workflow.
-
-Focus initially on YouTube and Instagram. Creator Intelligence is later and less essential. The supplied feature list identifies priorities, not eight equally sized features that all need full implementations in the first milestone.
-
-## Proposed first complete experience
-
-One creator adds a script and footage to a project. CreatorAi aligns the script to actual moments, offers a small set of evidence-backed short clips, and opens a selected clip as an editable timeline. The creator adjusts the cut, captions, crop, and hook, then exports YouTube Shorts and Instagram Reels variants. A landscape YouTube variant can use the same source and project.
-
-This demonstrates asset management, generation, understanding, clipping, editing, adaptation, and workflow in one connected job. Direct publication is a separate integration milestone; export readiness and live publishing must have distinct statuses.
-
-Initial persona proposal: solo creator or small creator team making spoken educational, commentary, interview, or product content. Start with speech-heavy footage while explicitly testing visual-only queries and B-roll. Do not describe a speech-only implementation as full visual understanding.
-
-## Feature requirements
-
-| Feature | First slice | Proposed completion check |
+| Area | Required slice | Acceptance |
 | --- | --- | --- |
-| Asset management | Upload, previews, search, project links, processing status | Reuse an asset in a second output without reuploading or rerunning unchanged analysis |
-| Script and hooks | Editable script with a few hook alternatives; footage-grounded hooks when footage exists | Save versions, edit text normally, and distinguish suggestions from spoken words |
-| Script-to-video understanding | Match script beats to timestamped speech and visual evidence | Clicking a match plays its source range; missing and repeated takes remain visible |
-| Clip generation | A few coherent candidates with source ranges and a short explanation | Open a candidate, trace its evidence, and adjust its beginning/end |
-| AI editing | Non-destructive cuts, reorder, captions, crop, text overlays, audio level | Undo AI edits, reopen a saved draft, and rerender from the same project |
-| Platform adaptation | YouTube Shorts, Instagram Reels; landscape YouTube if feasible | Preview format-specific crop, captions, cover, and metadata before export |
-| Content workflow | Idea, material, draft, review, ready, export; durable job status | A failed render can resume without regenerating the script or reanalyzing the video |
-| Creator Intelligence | Deferred; capture basic operational events now | No invented engagement prediction or performance metrics in the initial UI |
+| Asset management | Private uploads, metadata, previews, project links and cached analysis | Immutable originals; analysis reuse with ownership/provenance |
+| Scripts and hooks | Story Agent with brief/source tools and bounded revision behavior | Suggestions are grounded, versioned and explicitly accepted |
+| Script-to-video understanding | Footage Research Agent retrieves speech and verifies selected visual windows | Source ranges, actual observations, uncertainty and missing matches are visible |
+| Automated clips | Clip Director uses research evidence and can request more evidence | A few coherent candidates with valid source ranges and explained story connections |
+| AI-assisted production | Agent-created structured cut/caption/crop instructions applied by FFmpeg | Creator can request a revision; originals and edit instructions remain available |
+| Platform adaptation | YouTube Shorts / Instagram Reels; existing landscape preset remains available | Explicit preset and actual playable render; publication is a separate state |
+| Content workflow | Coordinator, typed agent handoffs, shared budget, checkpoints and human review | Resume after interruption; retry affected work without repeating completed analysis |
+| Editable output | MP4 plus source-linked JSON, SRT, copy and layered SVG where generated | Inspect/revise files externally without recovering structure from a flattened export |
 
-## Proposed limits to protect polish
+## Out of current scope
 
-Initially exclude advanced VFX, a complete Canva clone, professional color grading, arbitrary image layer recovery, a marketplace, dozens of platforms, fully autonomous publishing, and training a foundation model.
+- Inbuilt video timeline, trim/split/reorder UI, multi-track mixing, manual crop/caption precision tools, undo/history editor and editor-framework integration.
+- Inbuilt image/cover canvas, drag layers and broader Canva-style graphic editing.
+- Direct platform publishing/scheduling and Creator Intelligence.
+- Long-form/unrestricted uploads, face tracking, advanced VFX and training foundation models.
 
-A supporting thumbnail/cover editor can be an adjacent milestone after the video experience works. It should share the asset library and project, and use a real layer document. We retain this requirement even if its implementation follows the first video slice.
+The current implementation includes experimental cut/cover controls. They are existing extras, not required deliverables, and should not guide the next milestone. This documentation correction does not delete them; simplifying the runtime UI is a separate implementation change.
 
-## Proposed nonfunctional requirements
+## Editable does not mean an embedded editor
 
-- Show usable partial results while analysis continues. No false progress percentages or silent spinner-only waits.
-- Originals are immutable; projects contain references and changes. Saves are versioned and editor actions are undoable.
-- Store evidence and model/version provenance so a creator can inspect why a clip was proposed.
-- Video processing and rendering run outside short-lived web requests.
-- Use tenant/project access checks for originals, derived files, and search results. Credentials stay on the server.
-- Use bounded model/tool budgets and cancellable jobs. External publication has an explicit destination and creator review.
-- Treat project edits made during an AI run as version conflicts, not permission to overwrite newer work.
-- Provide keyboard and non-drag alternatives for editing actions, readable contrast, and reduced-motion behavior.
+Preserve immutable originals, versioned structured operations, captions and layer data. The creator approves or requests changes in CreatorAi and can continue manual editing externally. The present JSON/SRT/SVG package is portable data, not an import-ready Premiere/Resolve/CapCut project; external-editor compatibility must be verified before claiming it.
 
-These are proposed acceptance criteria. No measured latency, accuracy, cost, scalability, or conversion targets exist yet; establish them using the experiments in multimodal_understanding.md.
+## Architecture and quality constraints
+
+Use the specialist roles and handoff contracts in agents_and_workflows.md. Distinguish implemented single-agent behavior from the proposed multi-agent upgrade. Multiple model calls, tools or worker processes do not themselves count as multiple agents.
+
+Enforce authenticated ownership on every artifact and tool; server-only credentials; bounded shared model/tool budgets; source-backed proposals; honest progress; safe quota failure; checkpoints and explicit creator review. Do not invent performance, visual proof or publication success.
+
+Current prototype input limits are 40 MB / 180 seconds. Transcript timing is estimated. Public deployment is pending. Accurate alignment and stronger visual retrieval are later quality increments, not reasons to expand editor scope.
