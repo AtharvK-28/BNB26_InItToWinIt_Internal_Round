@@ -1,0 +1,6 @@
+packages:
+  - apps/*
+allowBuilds:
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - lucide-react@1.51.0

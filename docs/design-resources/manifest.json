@@ -1,0 +1,1082 @@
+{
+  "research_date": "2026-10-04",
+  "scope": "selected upstream resources; not full applications",
+  "sources": [
+    {
+      "name": "open-design",
+      "repo": "nexu-io/open-design",
+      "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+      "license": "Apache-2.0",
+      "prefixes": [
+        "skills/frontend-design/",
+        "skills/web-design-guidelines/"
+      ],
+      "files": [
+        "README.md",
+        "LICENSE",
+        "AGENTS.md",
+        "design-systems/figma/DESIGN.md",
+        "design-systems/figma/USAGE.md",
+        "design-systems/figma/tokens.css",
+        "design-systems/figma/manifest.json",
+        "design-systems/notion/DESIGN.md",
+        "design-systems/notion/USAGE.md",
+        "design-systems/notion/tokens.css",
+        "design-systems/notion/manifest.json"
+      ],
+      "downloaded_files": [
+        {
+          "path": "AGENTS.md",
+          "bytes": 56924,
+          "sha256": "39266e6a558c409b815959898ac02d3ede4c1891b3c753e90d58baec485d7b8d"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 11296,
+          "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+        },
+        {
+          "path": "README.md",
+          "bytes": 57433,
+          "sha256": "dbecfa17fb3999cea2de9f669fb03113c8d6415086a06a4246c745bba6c2a918"
+        },
+        {
+          "path": "design-systems/figma/DESIGN.md",
+          "bytes": 11721,
+          "sha256": "69ec480da3a8befab7b44ffd5cc4deca0c8ae8ac5ee690335413063fa1a38292"
+        },
+        {
+          "path": "design-systems/figma/USAGE.md",
+          "bytes": 1544,
+          "sha256": "a2127c6c95e5f02a11e5d65aac0e8008ae2c9901a0ef730db3a9d045f01266d5"
+        },
+        {
+          "path": "design-systems/figma/manifest.json",
+          "bytes": 1326,
+          "sha256": "7cfff92d0c66ef4992726f414cf551300df14fcb90aab5241dbc20fe12816801"
+        },
+        {
+          "path": "design-systems/figma/tokens.css",
+          "bytes": 7478,
+          "sha256": "0a16542ee227243d48270cfd58135347517c0ede3caa00f7ee0d45fae1339753"
+        },
+        {
+          "path": "design-systems/notion/DESIGN.md",
+          "bytes": 18451,
+          "sha256": "94c550cc035a90aa08b6645e7b3105d2e579453f8415e57b3639319fdb7e5b23"
+        },
+        {
+          "path": "design-systems/notion/USAGE.md",
+          "bytes": 1620,
+          "sha256": "aadca057b29d52f58983dec75230ef7b72fddbd550aff10ac8d4417874923452"
+        },
+        {
+          "path": "design-systems/notion/manifest.json",
+          "bytes": 1331,
+          "sha256": "0c6898be2d3e0494d936dd75651aff60a560b37eb7e158244a818f1533bd29e3"
+        },
+        {
+          "path": "design-systems/notion/tokens.css",
+          "bytes": 7747,
+          "sha256": "badeeb645158ff0c6ee1669467aa199a9bf3659a07b0b5adeee062212072a9f7"
+        },
+        {
+          "path": "skills/frontend-design/LICENSE.txt",
+          "bytes": 10174,
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "skills/frontend-design/SKILL.md",
+          "bytes": 5240,
+          "sha256": "6963d8b4ae3d285b021342db2d797ec7aeaabbfd82ffefe9c90607e8a416b116"
+        },
+        {
+          "path": "skills/web-design-guidelines/LICENSE",
+          "bytes": 1068,
+          "sha256": "6cd1609c9c12233507cdd2ce0d32e9a721e3c27494951be06b90090deeeb7af2"
+        },
+        {
+          "path": "skills/web-design-guidelines/SKILL.md",
+          "bytes": 2418,
+          "sha256": "3f7209777447330ea36e15c66b423c1fb9051fd1bb5fa30dcd25398780a1db6d"
+        },
+        {
+          "path": "skills/web-design-guidelines/references/guidelines.md",
+          "bytes": 6892,
+          "sha256": "934df9cec7c38850e579bd69618f8d8abef79bf059c476a002c49287852ce5b8"
+        }
+      ]
+    },
+    {
+      "name": "hallmark",
+      "repo": "nutlope/hallmark",
+      "commit": "13ac0ec7e148655948100b6396439e481361d690",
+      "license": "MIT",
+      "prefixes": [
+        "skills/hallmark/",
+        "site/css/"
+      ],
+      "files": [
+        "README.md",
+        "LICENSE"
+      ],
+      "downloaded_files": [
+        {
+          "path": "LICENSE",
+          "bytes": 1078,
+          "sha256": "06088a8b94598626f27612dea42300154bf7be967c85d9d3eee4490cb056af7d"
+        },
+        {
+          "path": "README.md",
+          "bytes": 6321,
+          "sha256": "878aa11aab1785f7a9d6c2eec889220b53cda4ddc22bf38cf575af98f99bfe72"
+        },
+        {
+          "path": "site/css/base.css",
+          "bytes": 6335,
+          "sha256": "fac606f10805ecbb89542d0a964f03c276f38c09f1f5a7e643cd81fee61f8c2e"
+        },
+        {
+          "path": "site/css/components.css",
+          "bytes": 133993,
+          "sha256": "0e5fa08bddc3bc657af93b986e5f174826c5eb162dfba9d228bae10760d50b4f"
+        },
+        {
+          "path": "site/css/sections.css",
+          "bytes": 60760,
+          "sha256": "447807e6bc93bb589b7dec5fc0a17a22993d951da1ba34bca46d640bf794bc54"
+        },
+        {
+          "path": "site/css/tokens.css",
+          "bytes": 55659,
+          "sha256": "5418e4ee538f456af5112aaa59baa662f6c4209c5ff82161443683f0f848e0c7"
+        },
+        {
+          "path": "skills/hallmark/SKILL.md",
+          "bytes": 67460,
+          "sha256": "59469635bbbd21acddbc664d95e8d97147f454b2d8f4a0a89c7d2c5afbe67577"
+        },
+        {
+          "path": "skills/hallmark/references/anti-patterns.md",
+          "bytes": 25676,
+          "sha256": "a36eb346ad59cafaa26119ed1e7c0bbb8aca6637209ee110eb630dd1a9307070"
+        },
+        {
+          "path": "skills/hallmark/references/assets.md",
+          "bytes": 25332,
+          "sha256": "60929b3dc2258b69caf3012d99d174e1ad73da9645263db81a9b271cd6fd7d61"
+        },
+        {
+          "path": "skills/hallmark/references/color.md",
+          "bytes": 4339,
+          "sha256": "31c470d16ceb17ccce290cbdd00b9e9a88f2094df8eaaefb67c86ec1e1cdb876"
+        },
+        {
+          "path": "skills/hallmark/references/component-cookbook.md",
+          "bytes": 30980,
+          "sha256": "4d9ff4eeb675b9d668516ce5d098031d3552453b3671e50da30fb38cb9ab58bb"
+        },
+        {
+          "path": "skills/hallmark/references/components/c1-outlined-chip.md",
+          "bytes": 464,
+          "sha256": "bfc3bcef6e23062710845dd8986dbf98574c6c46ffade1db255dbe13a3203262"
+        },
+        {
+          "path": "skills/hallmark/references/components/c2-inline-form-as-cta.md",
+          "bytes": 672,
+          "sha256": "1a6e3d564f49a1d3345117bf2f8af5aea46938c6974bf7eb86cf890e5068bc95"
+        },
+        {
+          "path": "skills/hallmark/references/components/c3-typographic-link.md",
+          "bytes": 280,
+          "sha256": "59362c6d9f683ec15c3e09862f2ea6cd8e2a84574738ece98e479c58607d0d69"
+        },
+        {
+          "path": "skills/hallmark/references/components/c4-sticky-bottom-bar.md",
+          "bytes": 671,
+          "sha256": "67234a8d8722bf0685d00a64ac737748c82af7e0c25271d0c50f418739bd03c6"
+        },
+        {
+          "path": "skills/hallmark/references/components/f1-bento-grid.md",
+          "bytes": 782,
+          "sha256": "d696a5ab7d6258cff0d2d9527fe07651bfbda6a725a4dfd8de00f678e1fb2bbc"
+        },
+        {
+          "path": "skills/hallmark/references/components/f2-sticky-scroll-stack.md",
+          "bytes": 899,
+          "sha256": "0079ce8c01e8d008882411ed807aa367276cc67af9b956c4f06da1714007ae83"
+        },
+        {
+          "path": "skills/hallmark/references/components/f3-tabular-spec-sheet.md",
+          "bytes": 419,
+          "sha256": "16331628cf441c7b570055c8edd60693d0aa793d1bc5eb2bfd145da700d9f072"
+        },
+        {
+          "path": "skills/hallmark/references/components/f4-step-sequence.md",
+          "bytes": 448,
+          "sha256": "d3ca2aa99f7e639b8ccda20f5e263f3a33b03830f8c93d666f469b8e629975e2"
+        },
+        {
+          "path": "skills/hallmark/references/components/f5-annotated-screenshot.md",
+          "bytes": 410,
+          "sha256": "58f9f4811ea60f923b2f44e0f3e9bac95c40929f8b1af4fdeedd1eae424051ec"
+        },
+        {
+          "path": "skills/hallmark/references/components/f6-product-card-grid.md",
+          "bytes": 2729,
+          "sha256": "22ebc07b00d71c950be8d1a0fdad2cc0e7340cfbbf2cd62c43804bfcfaaf106a"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft1-mast-headed.md",
+          "bytes": 501,
+          "sha256": "7f5671b583e9991f9a4671c223d6c15efdee5c1161dc616cbe2b398eb8d1b6db"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft2-inline-rule-single-line.md",
+          "bytes": 362,
+          "sha256": "de13bf7d9bfaddb42a84fc8584646e914f2273abdb34aa98ea9bd2f5d7ff0493"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft3-index-style-category-list.md",
+          "bytes": 483,
+          "sha256": "9f70608d62872be05af910a6168017c872ee1c17b2dbb8329128569231aa3cce"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft4-dense-typographic.md",
+          "bytes": 501,
+          "sha256": "b8d087773614698036e63474a8546024d874bb6da2b575e64fcaacc2fba0ad60"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft5-statement.md",
+          "bytes": 1303,
+          "sha256": "71be63a51def6a3b59badcd481e49d4d5c5d9f3d63a3b4a5b9c05482110f4000"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft6-letter-close.md",
+          "bytes": 1119,
+          "sha256": "8119d22fbbfb3efa83d0bdc41acbfc5037f2c80cb7c39659623d5216eb16c03e"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft7-newsletter-first.md",
+          "bytes": 1755,
+          "sha256": "2cd766761a8e18bff7bc473b3303392b806a15e461187ac325138f77a308dd48"
+        },
+        {
+          "path": "skills/hallmark/references/components/ft8-marquee-scroll.md",
+          "bytes": 1500,
+          "sha256": "32b8d38df984b0db385e9ce2251bbf6bb8df279e3933c441b97a0b703961e9f0"
+        },
+        {
+          "path": "skills/hallmark/references/components/h1-marquee.md",
+          "bytes": 507,
+          "sha256": "8258b25e27232994126701a4f72bf05267fc9c5dfdc14bcf186efaf96a7dbb10"
+        },
+        {
+          "path": "skills/hallmark/references/components/h2-split-diptych.md",
+          "bytes": 600,
+          "sha256": "f6077864f5c58414d7a10648aa8a3162767f2e356d0701d01953181a83cf3364"
+        },
+        {
+          "path": "skills/hallmark/references/components/h3-quote-led.md",
+          "bytes": 420,
+          "sha256": "4b1427750c5041ab9201cd18fcdd3dd7a93622644eff518d9ad300339f9a46b7"
+        },
+        {
+          "path": "skills/hallmark/references/components/h4-stat-led.md",
+          "bytes": 509,
+          "sha256": "9ada00461ea12be83dec2fba58e19fffd2c559925e68eb72ec18e0ec434f6cec"
+        },
+        {
+          "path": "skills/hallmark/references/components/h5-letter-hero.md",
+          "bytes": 361,
+          "sha256": "afcd7bb6b4c888d7e8460e7af5e86dc50149ca253419757bed2834bf66083321"
+        },
+        {
+          "path": "skills/hallmark/references/components/h6-photographic-fold.md",
+          "bytes": 586,
+          "sha256": "59e046afd5648bfe2737966f1203c0212e7311fbf0e1edee448e3f68f45aa0d0"
+        },
+        {
+          "path": "skills/hallmark/references/components/h7-demo-video-clipped-by-viewport-edge.md",
+          "bytes": 1613,
+          "sha256": "12b6f32a47a0b2e73547a0ac8b641cc19b1caa05dda4ffde424defb53afaa0de"
+        },
+        {
+          "path": "skills/hallmark/references/components/h8-mockup-split-browser-framed.md",
+          "bytes": 1309,
+          "sha256": "954b0a3aebfe6de8a3be70fedda669099125dd2ebc9c07948fbdb457fd8dc166"
+        },
+        {
+          "path": "skills/hallmark/references/components/h9-custom-illustration-centerpiece.md",
+          "bytes": 1479,
+          "sha256": "1d3d32859e6e451a67bfc38a403bd80115a42b6898a4d8788e4cfadb8c83e8d6"
+        },
+        {
+          "path": "skills/hallmark/references/components/n1-wordmark-2-links.md",
+          "bytes": 388,
+          "sha256": "8504774127e33f24a09844eb4c678e91b09ed513690fce51f7863d7cf3fdeab1"
+        },
+        {
+          "path": "skills/hallmark/references/components/n10-floating-on-scroll-morph.md",
+          "bytes": 1387,
+          "sha256": "056c2107492ab0eb9dafc7ab4c7ff5454222c1ee127fa45615ccc7b8955da36a"
+        },
+        {
+          "path": "skills/hallmark/references/components/n11-mega-menu.md",
+          "bytes": 3155,
+          "sha256": "b715421012d0997d25d5739c209be6129132fc91add677d75a8ad82d8672e1d4"
+        },
+        {
+          "path": "skills/hallmark/references/components/n12-banner-retract.md",
+          "bytes": 2858,
+          "sha256": "2d52ecb8725b1991d4f6b78301cd6f112464f7b17315bdf0febbff67bca50a56"
+        },
+        {
+          "path": "skills/hallmark/references/components/n13-inline-cmdk-pill.md",
+          "bytes": 3314,
+          "sha256": "6375fa0a1bbc92cba9a435159aa46cb084fc030c63e1abf8f073688959d7be75"
+        },
+        {
+          "path": "skills/hallmark/references/components/n1b-saas-three-section.md",
+          "bytes": 3047,
+          "sha256": "c2631c7807e33eea9b02faa9121a0f9e64861467b57b8635ee97f5fa52bb60ae"
+        },
+        {
+          "path": "skills/hallmark/references/components/n2-floating-chip.md",
+          "bytes": 617,
+          "sha256": "70ea848537c5fe29be30f5e4b7478ecc39f86d0089f207549dc98a873b6c8fc1"
+        },
+        {
+          "path": "skills/hallmark/references/components/n3-side-rail.md",
+          "bytes": 536,
+          "sha256": "20ed8a06a599d73190502a4801a3be2933b8e06874371167196b7d32dae66111"
+        },
+        {
+          "path": "skills/hallmark/references/components/n4-hidden-behind-k.md",
+          "bytes": 373,
+          "sha256": "bccddb3a25a6afd457163b71e09de07ac23bf5d922fdeb9561e25d825bb97dcf"
+        },
+        {
+          "path": "skills/hallmark/references/components/n5-floating-pill.md",
+          "bytes": 1418,
+          "sha256": "6dc8ffb9628fd7ee3669208091e11497864cecea69becc6b513ebdc1f3a737a3"
+        },
+        {
+          "path": "skills/hallmark/references/components/n6-newspaper-masthead.md",
+          "bytes": 1619,
+          "sha256": "243a28d1165328c3479a1b75a3ae05dbfe2a6b8c9f867df8e35873b391f8edd5"
+        },
+        {
+          "path": "skills/hallmark/references/components/n7-brutal-slab.md",
+          "bytes": 1380,
+          "sha256": "6c58d29129f7fd89b9fc755143648397749cdd06043ae0c0b51e6f07e7e6dcb5"
+        },
+        {
+          "path": "skills/hallmark/references/components/n8-terminal-command.md",
+          "bytes": 1651,
+          "sha256": "c88d787bd2e5cf8bf6fb2c4121602dc0289760b41235d437468322821ee4334b"
+        },
+        {
+          "path": "skills/hallmark/references/components/n9-edge-aligned-minimal.md",
+          "bytes": 868,
+          "sha256": "cc20c76a5abe7099ed2bde3480c81f75f02a760a4c0d2ac79de1503dca9f9ee3"
+        },
+        {
+          "path": "skills/hallmark/references/components/s1-left-margin-numbered.md",
+          "bytes": 495,
+          "sha256": "074ed68eafb03ca775b0593d0599fe20c7891356f473f04996f42425e6586585"
+        },
+        {
+          "path": "skills/hallmark/references/components/s2-hanging.md",
+          "bytes": 357,
+          "sha256": "7b6d04cb896051006fe41b041a67ed77d25010edb579c60b03d88f68ae471462"
+        },
+        {
+          "path": "skills/hallmark/references/components/s3-sticky-pinned.md",
+          "bytes": 1179,
+          "sha256": "4101cd7a28fe21a9b8094848ac6cc13c89f9e6f9bf801f04ac69b986c76727b4"
+        },
+        {
+          "path": "skills/hallmark/references/components/s4-inline-no-break.md",
+          "bytes": 438,
+          "sha256": "4b6d36da05383df1b29afe17b96645b816de07373016deb667efca340bb61ac6"
+        },
+        {
+          "path": "skills/hallmark/references/components/s5-bottom-anchored.md",
+          "bytes": 358,
+          "sha256": "55c159e2d8299501f14ac97468404dc8cad35695c2b7eaad2e972d314620eca0"
+        },
+        {
+          "path": "skills/hallmark/references/components/t1-pull-quote-with-marginalia.md",
+          "bytes": 465,
+          "sha256": "c7139796972c5f47d723742cbff02916a1ee0f2496456b86ac05d8839542be38"
+        },
+        {
+          "path": "skills/hallmark/references/components/t2-logo-wall-hairline.md",
+          "bytes": 733,
+          "sha256": "942121342a61bb4650722f7ba1b605347c6178d69ebeb740139b0bfb5c810e7f"
+        },
+        {
+          "path": "skills/hallmark/references/components/t3-single-huge-quote.md",
+          "bytes": 490,
+          "sha256": "7bca56e2cd630da3669f7cf8befd1bd654a5b249cf38b6d9af5a7c62e33b9239"
+        },
+        {
+          "path": "skills/hallmark/references/components/t4-numbered-stat-strip.md",
+          "bytes": 470,
+          "sha256": "a5fb5615902f9c4026f4ae7b0c96b536bb3cbb2fb4259031342d1cd190dab729"
+        },
+        {
+          "path": "skills/hallmark/references/contract.md",
+          "bytes": 2027,
+          "sha256": "2923a056b95da63d04100ac56bc8cdff6bc0a717ac3e5da5cef69eb5feb4619c"
+        },
+        {
+          "path": "skills/hallmark/references/copy.md",
+          "bytes": 12261,
+          "sha256": "703cdbf81fbef6f71d90596a32041d2a33a46fb71ba07ccf5ede6b4b1471d347"
+        },
+        {
+          "path": "skills/hallmark/references/custom-craft.md",
+          "bytes": 34133,
+          "sha256": "417ff74cd83e1fea50c41948c53e18365269b880806ef4f31d9e0ebda0f99246"
+        },
+        {
+          "path": "skills/hallmark/references/custom-theme.md",
+          "bytes": 24059,
+          "sha256": "da0fb051689bf9d100e50e67209566623c1fbe72e09b943248c458985c39e780"
+        },
+        {
+          "path": "skills/hallmark/references/design-md.md",
+          "bytes": 6846,
+          "sha256": "a9368b64dd9b6e53e8c707830ce28fd8601d3195a81647ea46b6995aa3556b3c"
+        },
+        {
+          "path": "skills/hallmark/references/export-formats.md",
+          "bytes": 14620,
+          "sha256": "de0a73d9bec7a31abbd0cbbf1ecd51c2e440f1f3fdc08f476a343959ca6c22f3"
+        },
+        {
+          "path": "skills/hallmark/references/floating-nav.md",
+          "bytes": 5266,
+          "sha256": "c8c80f6560700bf6ee6baf28b81ec1539e9ff920d885624707de5fe8803c25d1"
+        },
+        {
+          "path": "skills/hallmark/references/genres/atmospheric.md",
+          "bytes": 5075,
+          "sha256": "58d36e9a59c7d9e0ca99edeaaadab885f2635386fa69d52ea9eda3c29977e190"
+        },
+        {
+          "path": "skills/hallmark/references/genres/editorial.md",
+          "bytes": 4121,
+          "sha256": "1e88cd0c94435c6a9edd1c0b93b67db4321fb3481ff0d66ee24869e655847319"
+        },
+        {
+          "path": "skills/hallmark/references/genres/modern-minimal.md",
+          "bytes": 4836,
+          "sha256": "6125db00e38f2baca9369ed4d4aa917d977b85dd5eac6f19dac89707c3c3534b"
+        },
+        {
+          "path": "skills/hallmark/references/genres/playful.md",
+          "bytes": 5218,
+          "sha256": "e52c6ff3fe21b5024c83ac1f03285e1d627e3469ff140d6bea728642026c4f95"
+        },
+        {
+          "path": "skills/hallmark/references/hero-enrichment.md",
+          "bytes": 32151,
+          "sha256": "63c14cc2c256dd78a69a1c36f4bcb764940aa7f1ba2e6dd40ca36013f8884a83"
+        },
+        {
+          "path": "skills/hallmark/references/imagery-kit.md",
+          "bytes": 8544,
+          "sha256": "39d71df8dd6186b27f174fd8ab8ffd379553be3917cff50810c72365f6d6cb53"
+        },
+        {
+          "path": "skills/hallmark/references/interaction-and-states.md",
+          "bytes": 13537,
+          "sha256": "e816eb2d067ba9f6f288a3831549da95624a05f432ed2a50f54136f27dd2d67f"
+        },
+        {
+          "path": "skills/hallmark/references/layout-and-space.md",
+          "bytes": 6766,
+          "sha256": "987f3a45f5dbe81547117a77987bcedf5376608a6412067e04337047e0c7c839"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures.md",
+          "bytes": 11597,
+          "sha256": "a6f19a17073aca18a6ff7a8fc8c3c5f711865e01c6d97de609771b47fe8394bc"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/01-bento-grid.md",
+          "bytes": 1836,
+          "sha256": "aa268415862188414f8db94715e20ae7d29df3dc7c494083683378705f3f8493"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/02-long-document.md",
+          "bytes": 1722,
+          "sha256": "8ca81106396f2bd00eb9ef5d5d1f00c3aab0500394e706d6a2b3221a6c0d910f"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/03-marquee-hero.md",
+          "bytes": 1645,
+          "sha256": "2b7c35860086da6232cb3725c059bead9a31a91872d464266ce6e07a5a75f755"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/04-stat-led.md",
+          "bytes": 2120,
+          "sha256": "a6930b4ba6377c8ef5fcb7af6bf4393cd924292cf03871a37636dd4b77de22b7"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/05-workbench.md",
+          "bytes": 1690,
+          "sha256": "0cbe92772c7b2ffd9b24b9e446b1e1cd9ed22930b39030ef5a6e9cba5512d31f"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/06-conversational-faq.md",
+          "bytes": 1621,
+          "sha256": "373473bed23d055164edc04b16344fcd3861c1ab39ff73f3c75dc1719663d488"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/07-manifesto.md",
+          "bytes": 1711,
+          "sha256": "dc1327bad300179c1b233d02d20137776dc98c9affcfd3942b9f3f796ca67b93"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/08-photographic.md",
+          "bytes": 1491,
+          "sha256": "e5c77bb6ca6d82616c9c63bb6e68ee17c6af7bbca935f9ff29481294d7d1f74c"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/09-quote-led.md",
+          "bytes": 1817,
+          "sha256": "39069a564d9ebd76daf26f46ec7776828dc45fc6a72ae712b3bf7a4fd012f650"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/10-specimen.md",
+          "bytes": 1614,
+          "sha256": "7f23cead7f91c2ee2335eb2c87fb0aa1e7826f4573748d549756523085ed6ad4"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/11-catalogue.md",
+          "bytes": 1186,
+          "sha256": "99ff614600f18cfc80dfa3b9a2158dbea3b3674f76f40b70e721b9255796c265"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/12-letter.md",
+          "bytes": 1253,
+          "sha256": "6f3ad86e87223bd9b6b1267e27532811efbb60f50606e7f72c8525d2cc01d709"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/13-index-first.md",
+          "bytes": 1208,
+          "sha256": "25c832844a1b5e6ce17a335ac98e81d98d9e3372f514d83dc26ac299cc077865"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/14-narrative-workflow.md",
+          "bytes": 1428,
+          "sha256": "e604a1106131fe3a65721066a304922e757a78c997c197227840931079c780fd"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/15-split-studio.md",
+          "bytes": 1336,
+          "sha256": "400effa4de50d5f2fabd88be37447aa845deb3b67810ed4f2b995df458c852e4"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/16-feature-stack.md",
+          "bytes": 1386,
+          "sha256": "a389fae7fe39550352bdf1ce68cdaa3965a434fa1154f67d3c276e550d1d165a"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/17-type-specimen.md",
+          "bytes": 1271,
+          "sha256": "a1487fde891f73bf34a2ca38a631a2cb5c71d3a7b2ccd940114354e291ea8034"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/18-portfolio-grid.md",
+          "bytes": 1057,
+          "sha256": "af5d0f34a7ef7b81d6f4c8c845497ae553d44f418526d7e503346c9243b034e3"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/19-map-diagram.md",
+          "bytes": 1269,
+          "sha256": "5a576f25f4c8d58c14f574e3413560118343df9a9669db80c6c452daf509c3c3"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/20-ecosystem-index.md",
+          "bytes": 1209,
+          "sha256": "fe206580a39ffc4b3534f3a7414155aa626fe16b82b608a0b8b415c1510f17ad"
+        },
+        {
+          "path": "skills/hallmark/references/macrostructures/21-component-playground.md",
+          "bytes": 1171,
+          "sha256": "ad3cbdbe9181e9472cb7b7fffbbe35021dc9b5b99ea86adc026f34d6b2c2f01f"
+        },
+        {
+          "path": "skills/hallmark/references/microinteractions.md",
+          "bytes": 20017,
+          "sha256": "613ca56c2c16e40aeb594af21fabd651732d9de63c848aee51113602525f6e64"
+        },
+        {
+          "path": "skills/hallmark/references/motion.md",
+          "bytes": 4340,
+          "sha256": "330d056810315f65819579f8207afe402703a9192bc76a2009558a59b7c84ccf"
+        },
+        {
+          "path": "skills/hallmark/references/preview-examples.md",
+          "bytes": 2834,
+          "sha256": "df61c24c9a67457ef7369ec5f20575095326df72ffe6534c8fa9730581ebf7d9"
+        },
+        {
+          "path": "skills/hallmark/references/responsive.md",
+          "bytes": 5918,
+          "sha256": "2bf18d72af704ca5dd3c220359a4c77c718efa19c40f62d9bff61ac4a90209b0"
+        },
+        {
+          "path": "skills/hallmark/references/slop-test.md",
+          "bytes": 31065,
+          "sha256": "6eb49fc64ca54929d2c1600e2a6014268f1a7593787c0ed3f6ecb4ac8390ad86"
+        },
+        {
+          "path": "skills/hallmark/references/structure.md",
+          "bytes": 15714,
+          "sha256": "ca5c0296ae428f8c4c5214407d431bbda5c453f98f2e7abdec03d644271af32b"
+        },
+        {
+          "path": "skills/hallmark/references/study.md",
+          "bytes": 42639,
+          "sha256": "021fe4d001b38ee87414c1bb69321d2e44b67df8ede76ecec225c41a634aab20"
+        },
+        {
+          "path": "skills/hallmark/references/themes/carnival.md",
+          "bytes": 19616,
+          "sha256": "119a9c803eac74958e5df6151da8a2575a1cc2d061a619bdb7f32cf972308ee2"
+        },
+        {
+          "path": "skills/hallmark/references/themes/cobalt.md",
+          "bytes": 11273,
+          "sha256": "13be92af729e6b82d1b1e51aa078f7c007e2900c8f0798b2c0fd2c0eeac7019e"
+        },
+        {
+          "path": "skills/hallmark/references/themes/grid.md",
+          "bytes": 14564,
+          "sha256": "e68e8b97f62d613dc94a03afd346b9e12de8ffcc65dc8633c4c223c92875c7da"
+        },
+        {
+          "path": "skills/hallmark/references/themes/hum.md",
+          "bytes": 32317,
+          "sha256": "bbdd1e89a32d6b15e99493ba9497816a0915bd4e9bf150b95868db597c20e1d5"
+        },
+        {
+          "path": "skills/hallmark/references/themes/lumen.md",
+          "bytes": 28180,
+          "sha256": "d5459478d3aa1ea6330c221dfe011b717a70dbb036f597403b3a6b3cf82dd53b"
+        },
+        {
+          "path": "skills/hallmark/references/typography.md",
+          "bytes": 18381,
+          "sha256": "94d7b2d2b138bd8687e09dc3dd618eaafff500b0497a6d69cb4c29b764e94b9c"
+        },
+        {
+          "path": "skills/hallmark/references/verbs/audit.md",
+          "bytes": 2803,
+          "sha256": "0a5b484453f1697a8675a7020df9159d0b4ce22f059b873501bfd82c26d6a31a"
+        },
+        {
+          "path": "skills/hallmark/references/verbs/redesign.md",
+          "bytes": 13849,
+          "sha256": "c2830f3b7d68e9622f55d376048a5a454c5ef59d309a211e716d1142e86acbdf"
+        }
+      ]
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "commit": "477bcb28c9812b385cb51a4605ddf30d7b2266e2",
+      "license": "MIT",
+      "prefixes": [
+        ".claude/skills/ui-ux-pro-max/"
+      ],
+      "files": [
+        "README.md",
+        "LICENSE"
+      ],
+      "downloaded_files": [
+        {
+          "path": ".claude/skills/ui-ux-pro-max/SKILL.md",
+          "bytes": 15969,
+          "sha256": "ea087c341bfb5b23195c7302027268ede86da802554c18a5c4896a6017b439f9"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/app-interface.csv",
+          "bytes": 11046,
+          "sha256": "331e7cf2c0b222d80c566c5f255c63cb339f65bfd02e471a720f28e4864a9f08"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/catalog-summary.json",
+          "bytes": 2392,
+          "sha256": "6638da97231c07fb5cef3cd9d3ce483ca7b2f9748980f8c27490eb03968d8894"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/charts.csv",
+          "bytes": 23365,
+          "sha256": "4115cf1120680f2cedef0676cb648f30c7ef4699e2a947535d4113e71ed3b12a"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/colors.csv",
+          "bytes": 37940,
+          "sha256": "8162429222bce22df62b564085946a30d07cc9722c58d0a3a494bd0d1d00841c"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/data-provenance.json",
+          "bytes": 36686,
+          "sha256": "e82fb33ed49375a300e93d9c11ccd1c1493c999e84ee7ee295e527634786e2e0"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/google-font-licenses.json",
+          "bytes": 433127,
+          "sha256": "35688523f2955795caa1a47c53b83099e60c1708461476f9cc3a050cf3b0148a"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/google-fonts.csv",
+          "bytes": 747241,
+          "sha256": "1c8c3b2ea1faf6a1012da463756def8b3889db33f2226f0343bb4daa80307d03"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/icons.csv",
+          "bytes": 57945,
+          "sha256": "50816c6012030178195a16ee481ebf58b47bd985d70e8ec58886cc83f6eddafc"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/landing.csv",
+          "bytes": 25449,
+          "sha256": "9a2edd3bb676c2a58f00ade7a062e285222d4297bfd847c8d5b056f0dbbf52d0"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/motion.csv",
+          "bytes": 14679,
+          "sha256": "381affe8df8ea1f66fbbda2598827f9f54299107bbe6a1b4e9b68f6b62091ceb"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/phosphor-icons-upstream.json",
+          "bytes": 823933,
+          "sha256": "2399325233b277b5c97a80e6a5e8941154f5d057beee4e7613db87c87d700236"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/products.csv",
+          "bytes": 75623,
+          "sha256": "42473f75e8dde5987bdf89ce55d8c168091b80a356cae691dd60247d80720b70"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/react-performance.csv",
+          "bytes": 15080,
+          "sha256": "3d925802539abac5afeb63ae8aa1960b7229ad271b3a47caed40ab2d97ad0734"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/angular.csv",
+          "bytes": 19863,
+          "sha256": "704be83f2bad30c7e6de01afb113ffa01e0c458762f48b7102f31ba2367b5553"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/astro.csv",
+          "bytes": 14591,
+          "sha256": "2c2f55fadaafc05e04cc321c8194a1a28b656e6757fe2ba316f41b16428299c6"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/avalonia.csv",
+          "bytes": 27327,
+          "sha256": "442fca14675a020683473e7e49f08abb27b9df0765c80efe54aef61f1a4ac258"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/flutter.csv",
+          "bytes": 14192,
+          "sha256": "64dba0ac17349f28bce517a0f5f48c54d9ed2e487ec0c0258303463b382f41a0"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv",
+          "bytes": 16551,
+          "sha256": "d05a581d20af57b8ca0104a6d31d90a07c437d500662a96c3029fc2f9a4678ee"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/javafx.csv",
+          "bytes": 33577,
+          "sha256": "2e819b8d5abdd23ad4dae0991650fdb57af497aabd68b37463aa9c442944c869"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv",
+          "bytes": 12295,
+          "sha256": "699de218b286948eaec7d15767b6e1350ee299167e49bf476d82e3ff58724e0a"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/laravel.csv",
+          "bytes": 20163,
+          "sha256": "854ea4daa5fc61292d22235ad33b49ba3fe22423c3de8d3cb03758ffed3b59f9"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/nextjs.csv",
+          "bytes": 18687,
+          "sha256": "ecd2c27b2ea0127d203ae726060efcdd7335b5e83f96b99e4f3befbbfeebd5a4"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv",
+          "bytes": 28700,
+          "sha256": "fce682a338cfcdbf35d318d20e5befbe7b5d81b05abc37f87677a6d9cde84dc6"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv",
+          "bytes": 23014,
+          "sha256": "3d9b54ed2d151bd9c86e9e5609b8a6f88a00c4c52fa601a30af96c49b2c4d176"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/react-native.csv",
+          "bytes": 14049,
+          "sha256": "ba31dd9c0c04da6bc02a74448bf121f9c0728ae5ba3b4d47b487778b0a1135b5"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/react.csv",
+          "bytes": 21166,
+          "sha256": "4dd176a9787e5c6306b5df94158d75955adcdc6edab41ce5286641a5842303c1"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/shadcn.csv",
+          "bytes": 23184,
+          "sha256": "e56cfde5b74907836ac3582a4779d5b7f3d206a702ab81b8669a1b668c3eeb51"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/svelte.csv",
+          "bytes": 15078,
+          "sha256": "f6e379ba802941ba26b01d4ffbe3cd39120f2587659a1d93851c707f66bc13db"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/swiftui.csv",
+          "bytes": 15323,
+          "sha256": "bdd9231ff3ad658f4e7c063e1eb49df2fd09ac8d90631a86df899b39833b9623"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/threejs.csv",
+          "bytes": 46769,
+          "sha256": "155d583b9c64da0df4b6c6cb060c02eab222505e0734d6353da02c9e2b5d982b"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/uno.csv",
+          "bytes": 30091,
+          "sha256": "a0474363e4225b5367214d5675fd3e075f137026f9500f0d04357882ef4f6d48"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/uwp.csv",
+          "bytes": 24692,
+          "sha256": "c409f08c1fbba1f1029f1acaa554e7b4471cc85517a5751c9f2e62465badcd5c"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/vue.csv",
+          "bytes": 12813,
+          "sha256": "b655f1ebb9dff2652d15981f31b1784c8a6d4759efd2815a14f3088257569f95"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/winui.csv",
+          "bytes": 27890,
+          "sha256": "e676dc1c13ee6c205c40b0746f1335150a346c7a49a0616d2545bc3d2c930c85"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/stacks/wpf.csv",
+          "bytes": 24158,
+          "sha256": "9781a9950b20333637b30a02e498b7efca21b618a3eeb8665836f3ac6e974da7"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/styles.csv",
+          "bytes": 149478,
+          "sha256": "a93a4d9d7025856575d7b7583bda020be9043013432c5af7c58af9dbdfb206b7"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/typography.csv",
+          "bytes": 49997,
+          "sha256": "321fc446e89024488ebae96dda93efc4d2307bd8bddb240857ad51364f6782c8"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/ui-reasoning.csv",
+          "bytes": 77360,
+          "sha256": "f0774dd741cecdad5eec842034bd6d5e9ea50e9f220a1910069748daa0bb8e9a"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/data/ux-guidelines.csv",
+          "bytes": 27516,
+          "sha256": "ff81ec613f70ba9fc3fcce52dbe4ae35d44b2079dbe6dc066d2d6e38c28facd5"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/references/pro-rules.md",
+          "bytes": 10909,
+          "sha256": "d28442d61c310b49c054a4ea736f89fb3008beebdbbc38c4b3a540b8f7fadf23"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/references/quick-reference.md",
+          "bytes": 24526,
+          "sha256": "0609bc7c89dacb40472465d8fc14257b56b2c43439660fc8d6fa3b8c022e1876"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/core.py",
+          "bytes": 41236,
+          "sha256": "c3be4b23e7150e6b45095213158cfa3c8ad96502f01dde3f6ffff9de64a4f481"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/design_system.py",
+          "bytes": 71537,
+          "sha256": "e7d1c94c4b2eada17c5551157668362659ccf9626d34dbd58e68142410f90103"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/reasoning_contract.py",
+          "bytes": 5824,
+          "sha256": "b8bac1af82aa280d3e06f00aabaeac4337e632996b07fed874e2b6ee6e9c5913"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/search.py",
+          "bytes": 9373,
+          "sha256": "d54e648fe0ec2932cac66684220cc17be4bd4b4eba1d23d3195d509d398db374"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/google-api.json",
+          "bytes": 1079,
+          "sha256": "22d8dc81a7d6827b7e8b64b53e7d184210fb9759e8e294e0d5133c81cc460176"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/google-catalog.json",
+          "bytes": 1772,
+          "sha256": "c608ad5c4084ebc50a4bbbfb69ea2456c01fd5519c457e18410fffd250ae948f"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/google-existing.csv",
+          "bytes": 480,
+          "sha256": "4e0761b839dc6b2187a370e82eddc0aed8a7ff10c09e28dd814bb3656dac595b"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/google-metadata.json",
+          "bytes": 328,
+          "sha256": "30bffc29ae348416a2de2f9c6c418e768e4578f136b0f4bac5d2f70124f2e9ba"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/google-overrides.json",
+          "bytes": 97,
+          "sha256": "6243a48a4619986768c4628e2d0c98ff195beba71ba9be5df8f0c52fc6d90c0b"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/icons-curated.csv",
+          "bytes": 495,
+          "sha256": "68362c9a700c13b96f000784a0198c1c7e117a7088a01c85744e44233038fe9d"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/phosphor-core.json",
+          "bytes": 571,
+          "sha256": "ae4d0bb076240824e1b643c2270d1f8cc0952a69502ec1e622b7dedd85b930bb"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/phosphor-package.json",
+          "bytes": 370,
+          "sha256": "500588c757d6de03e3d7e69b27a8b8b1f88ccf6bb0333e4c1e9b0d6a4f112475"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/phosphor-react-exports.json",
+          "bytes": 87,
+          "sha256": "d79f2ee0afdbc2f87776733e145df3538a16a25d7c2fba0056bb48295dad0ded"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/catalogs/phosphor-react-package.json",
+          "bytes": 81,
+          "sha256": "1c57a1d76bcc0cdd3632d4c18b9c0e79576b4591df39831c9607e5d0eb4f2cec"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-baseline.json",
+          "bytes": 89426,
+          "sha256": "0df200fc54c1cb97a52d6775e7f501509163cea8f8b73fd7268429bc1f835afe"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-cases.json",
+          "bytes": 36734,
+          "sha256": "e77d36eebbf6ddc2860946a02cdb659351da6c09f2688f1ed30939a418099646"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/fixtures/relevance-thresholds.json",
+          "bytes": 5079,
+          "sha256": "1fbe8623fe3e49c8d828139bca9df69043746e488e8bf09d93dfb9cbc31f5cef"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_catalog_refresh.py",
+          "bytes": 19466,
+          "sha256": "3e2ca5d12702318f641ae62d0c14f22a3bcc84d84e79b863c0e947d475604adb"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_catalog_summary_line_endings.py",
+          "bytes": 2947,
+          "sha256": "fa6ff09f0ec2c99013588c77397f5082dddebe8f467e94c5f8378ec9595f4989"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_core.py",
+          "bytes": 16680,
+          "sha256": "3527fe2f4b852f69f07c17ddc0d615d9a6e025c924e45a33985579a94a8d2118"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_core_data_quality.py",
+          "bytes": 8954,
+          "sha256": "3ffc6b4905c9ea26d7ac4527ab154d153584231aee71b2ae4bd017977fa09cc5"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_data_contracts.py",
+          "bytes": 19513,
+          "sha256": "0360d6e10080c0bca214f2b0bbad582ba50702a542ce21013351aca54938df3a"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_design_system_mode.py",
+          "bytes": 9815,
+          "sha256": "95ad2c154349f7021f55a558f8dcdd71df1a24fcf531a4364a8e49526a0865ef"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_design_system_stack.py",
+          "bytes": 2261,
+          "sha256": "83d09ffe8cfbf7b265f362129f061dfe8e5e167ce5db43adaead197cabc9ca38"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_native_desktop_stack_freshness.py",
+          "bytes": 8375,
+          "sha256": "3942845712b9a829323cd3568511483135f2a8c7cd79ccf61679da4b0f624dbb"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_relevance_evaluator.py",
+          "bytes": 8430,
+          "sha256": "2fe56a4d6fe5fff15ff592274b0eeaba925146cefea6c0fa29d8f1b77c9aca1f"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_skill_script_paths.py",
+          "bytes": 4305,
+          "sha256": "7cec24b94be771bc60bc84f8993e614bb16d4047930e1dd3d3bed91628311d44"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_style_taxonomy.py",
+          "bytes": 7425,
+          "sha256": "cd14d0092e8a454d213aa104b53e4e70ba698491fa00fde9fdec5ca8a3d70011"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_text_layout_resilience.py",
+          "bytes": 5874,
+          "sha256": "b51d32ee8a15505b87cb81957fb2d1b385e041e8beb4463c311d236bfd29ebd4"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/tests/test_web_stack_freshness.py",
+          "bytes": 7701,
+          "sha256": "74897571398585f27e2c35d09d81b0a531c8c774f4a2967e5e1b1d1b05a483d9"
+        },
+        {
+          "path": ".claude/skills/ui-ux-pro-max/scripts/validate_data.py",
+          "bytes": 52230,
+          "sha256": "a599aa256049cf30954d1f164721b99e453eb7e4cb8241bcab2d5573e6cf58b8"
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1075,
+          "sha256": "738f69dfa83db5c347c678fb9d90e560877059f0de93a327c39001bff92dc014"
+        },
+        {
+          "path": "README.md",
+          "bytes": 37133,
+          "sha256": "13957904b9999d6e367ecbb13d4df1aeb0a945d84f2da8c69c3b22e0750d2d7f"
+        }
+      ]
+    }
+  ]
+}

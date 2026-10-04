@@ -7,3 +7,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## CreatorAi project context
+
+Read `DESIGN.md` and `docs/implementation_progress.md` before continuing implementation. This is an iterative, free-first prototype. Keep each increment functional and verified; avoid invented AI outputs or performance metrics.
+
+For UI work, read the portable skill files under `docs/design-resources/open-design/skills/frontend-design/`, `docs/design-resources/hallmark/skills/hallmark/`, and `docs/design-resources/ui-ux-pro-max/.claude/skills/ui-ux-pro-max/`. Product tokens and the working application brief in DESIGN.md take precedence over marketing-page defaults. Read only relevant references. The optional offline setup command is `python docs/tools/setup_design_skills.py --install`.
+
+Never display `.env` values, signed URLs, bearer tokens, or passwords. Archive content stays outside the active build. Cloud deployments require Supabase Auth/Postgres/private Storage; local anonymous mode is only for loopback development.

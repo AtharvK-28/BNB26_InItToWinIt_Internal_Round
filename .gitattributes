@@ -1,0 +1,5 @@
+* text=auto
+
+# Preserve exact bytes for the pinned resource and legacy archive hash manifests.
+docs/design-resources/** -text
+archive/** -text
