@@ -6,7 +6,7 @@
 import { accessToken, cloudMode } from "./supabase";
 
 export const apiBase =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+  (process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000").replace(/\/+$/, "");
 export type ProjectPlatform = "youtube" | "instagram" | "tiktok" | "linkedin" | "x";
 export const PROJECT_PLATFORMS: ProjectPlatform[] = ["youtube", "instagram", "tiktok", "linkedin", "x"];
 export type ProjectFields = {
