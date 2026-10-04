@@ -79,8 +79,8 @@ export function SessionGate({ children }: { children: ReactNode }) {
 /** Airbnb-style "Log in or sign up" card. */
 export function AuthCard() {
   const [register, setRegister] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("maya@creatorai.example");
+  const [password, setPassword] = useState("CreatorAi2026");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
